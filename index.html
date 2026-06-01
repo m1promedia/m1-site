@@ -57,6 +57,17 @@
   .m1-card-tag{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600}
   .m1-card-name{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(20px,2.2vw,28px);font-weight:600;letter-spacing:-.01em;line-height:1.1}
   .m1-card-desc{color:var(--muted);font-size:14px;line-height:1.68;max-width:480px}
+  .m1-expand-close{
+    display:flex;align-items:center;justify-content:center;
+    gap:8px;margin-top:24px;padding:12px;
+    cursor:pointer;border:1px solid var(--line);
+    border-radius:100px;width:fit-content;
+    margin-left:auto;margin-right:auto;
+    color:var(--muted);font-size:13px;font-weight:500;
+    transition:color .2s,border-color .2s;
+  }
+  .m1-expand-close:hover{color:var(--text);border-color:rgba(255,255,255,.35)}
+  .m1-expand-close svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 </style>
 </head>
 <body>
@@ -154,7 +165,7 @@ const PROJECTS = [
       "https://static.wixstatic.com/media/c166fc_ea8fe826090c4beaacb273e668434615~mv2.jpeg"
     ],
     video:"https://video.wixstatic.com/video/c166fc_b83113e12bd5443c884e8c27f18c6135/720p/mp4/file.mp4",
-    cover:"https://static.wixstatic.com/media/c166fc_e364a13ce6a44348b4e8dc2f9cc0ca26~mv2.jpg",
+    cover:"https://static.wixstatic.com/media/c166fc_2bca91d5c30645e8ac5ef87a46051ed7~mv2.jpg",
     desc:"Photography, product shots and a targeted launch campaign for this premium face mask startup at the height of the pandemic. The work was featured in Forbes and on Global News."
   }
 ];
@@ -238,9 +249,11 @@ PROJECTS.forEach((p, i) => {
 
   const arrow = document.createElement('div'); arrow.className = 'm1-arrow';
   arrow.innerHTML = '<div class="m1-arrow-wrap"><svg class="m1-arrow-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>';
-  const expand = document.createElement('div'); expand.className = 'm1-expand';
+
   const stageId = 'stage-' + i;
-  expand.innerHTML = '<div class="m1-expand-inner"><div class="m1-expand-stage" id="' + stageId + '"></div></div>';
+  const expand = document.createElement('div'); expand.className = 'm1-expand';
+  expand.innerHTML = '<div class="m1-expand-inner"><div class="m1-expand-stage" id="' + stageId + '"></div><div class="m1-expand-close" id="close-' + i + '"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>Close</div></div>';
+
   wrap.appendChild(arrow); wrap.appendChild(expand); list.appendChild(wrap);
 
   function toggle() {
@@ -257,8 +270,10 @@ PROJECTS.forEach((p, i) => {
       buildExpandContent(p, document.getElementById(stageId));
     }
   }
+
   card.querySelector('.m1-card-media').addEventListener('click', toggle);
   arrow.addEventListener('click', toggle);
+  document.getElementById('close-' + i).addEventListener('click', toggle);
 });
 </script>
 </body>
