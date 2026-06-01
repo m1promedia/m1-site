@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Hanken+Grotesk:wght@400;500;600&display=swap');
+  :root{--accent:#e0a64b;--bg:#0b0b0d;--surface:#141418;--text:#f4f1ea;--muted:#8d8d96;--line:rgba(255,255,255,.08);--radius:14px}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:var(--bg);color:var(--text);font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
+  .m1-root{padding:48px 24px 72px}
+  .m1-wrap{max-width:1100px;margin:0 auto}
+  .m1-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;line-height:.96;letter-spacing:-.02em;font-size:clamp(40px,7vw,82px);margin-bottom:20px}
+  .m1-lede{color:var(--muted);font-size:clamp(15px,1.4vw,18px);max-width:520px;line-height:1.55;margin-bottom:46px}
+  .m1-list{display:flex;flex-direction:column;gap:16px}
+  .m1-card-wrap{display:flex;flex-direction:column}
+  .m1-card{display:grid;grid-template-columns:42% 1fr;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;opacity:0;transform:translateY(18px);animation:m1in .55s cubic-bezier(.2,.7,.3,1) forwards}
+  .m1-card.expand-open{border-radius:var(--radius) var(--radius) 0 0;border-bottom-color:transparent}
+  @keyframes m1in{to{opacity:1;transform:none}}
+  @media(max-width:640px){.m1-card{grid-template-columns:1fr}}
+  .m1-card-media{position:relative;aspect-ratio:16/10;overflow:hidden;cursor:pointer;background:var(--bg)}
+  @media(max-width:640px){.m1-card-media{aspect-ratio:16/9}}
+  .m1-card-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(26px) brightness(.45) saturate(1.15);transform:scale(1.15)}
+  .m1-card-img{position:absolute;inset:0;width:100%;height:100%;transition:transform .7s cubic-bezier(.2,.7,.3,1)}
+  .m1-fit{object-fit:contain;padding:20px}
+  .m1-cover{object-fit:cover;filter:saturate(.92) brightness(.82)}
+  .m1-card-media:hover .m1-fit{transform:scale(1.04)}
+  .m1-card-media:hover .m1-cover{transform:scale(1.06)}
+  .m1-card-fallback{position:absolute;inset:0;background:radial-gradient(120% 120% at 0% 0%,rgba(224,166,75,.18),transparent 55%),linear-gradient(135deg,#1a1a20,#0e0e12)}
+  .m1-arrow{display:flex;justify-content:center;align-items:center;padding:10px 0;cursor:pointer}
+  .m1-arrow-wrap{transition:transform .45s cubic-bezier(.2,.7,.3,1);display:flex;align-items:center;justify-content:center}
+  .m1-arrow.is-open .m1-arrow-wrap{transform:rotate(180deg)}
+  .m1-arrow-icon{width:22px;height:22px;stroke:rgba(255,255,255,.35);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .25s}
+  .m1-arrow:hover .m1-arrow-icon{stroke:rgba(255,255,255,.85)}
+  .m1-arrow:not(.is-open):hover .m1-arrow-icon{animation:m1bob .9s ease-in-out infinite}
+  .m1-arrow.is-open .m1-arrow-icon{stroke:rgba(255,255,255,.65)}
+  @keyframes m1bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  .m1-expand{overflow:hidden;max-height:0;opacity:0;background:var(--surface);border:1px solid var(--line);border-top:none;border-radius:0 0 var(--radius) var(--radius);transition:max-height .55s cubic-bezier(.2,.7,.3,1),opacity .35s ease}
+  .m1-expand.is-open{max-height:6000px;opacity:1}
+  .m1-expand-inner{padding:24px 28px 28px}
+  .m1-expand-stage{position:relative;width:100%}
+  .m1-expand-videos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:640px){.m1-expand-videos{grid-template-columns:1fr}}
+  .m1-expand-video{position:relative;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}
+  .m1-expand-video iframe,.m1-expand-video video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+  .m1-expand-video-full{position:relative;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;margin-top:12px}
+  .m1-expand-video-full video{position:absolute;inset:0;width:100%;height:100%;background:#000}
+  .m1-expand-single{position:relative;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}
+  .m1-expand-single video,.m1-expand-single iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+  .m1-photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  @media(max-width:640px){.m1-photo-grid{grid-template-columns:repeat(2,1fr)}}
+  .m1-photo{position:relative;aspect-ratio:1;overflow:hidden;border-radius:8px;background:#000}
+  .m1-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s cubic-bezier(.2,.7,.3,1)}
+  .m1-photo:hover img{transform:scale(1.05)}
+  .m1-card-body{padding:32px 36px;display:flex;flex-direction:column;justify-content:center;gap:12px;border-left:1px solid var(--line)}
+  @media(max-width:640px){.m1-card-body{padding:24px;border-left:none;border-top:1px solid var(--line)}}
+  .m1-card-tag{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .m1-card-name{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(20px,2.2vw,28px);font-weight:600;letter-spacing:-.01em;line-height:1.1}
+  .m1-card-desc{color:var(--muted);font-size:14px;line-height:1.68;max-width:480px}
+</style>
+</head>
+<body>
+<div class="m1-root">
+  <div class="m1-wrap">
+    <h1 class="m1-title">Our&nbsp;projects.</h1>
+    <p class="m1-lede">Samples of work we have created for our clients</p>
+    <div class="m1-list" id="m1List"></div>
+  </div>
+</div>
+<script>
+const PROJECTS = [
+  {
+    client:"Eleventh Hour Games",
+    category:"Game Trailers",
+    inline:true,
+    videos:["R8zEPYn_gyg","U8ubbH2bwVY"],
+    cover:"https://static.wixstatic.com/media/c166fc_9fc54dc42e004897bb9f4839d3473a62~mv2.webp/v1/fit/w_1600,h_1600,al_c/KRaftonEleventh.webp",
+    desc:"Working as a Media Specialist, we are joining the team at EHG to deliver exciting media focused around their hugely popular live service ARPG, Last Epoch. Utilizing experience gathered throughout several years working in Esports and creating similar game trailer style content, we are excited to put our gaming expertise to use."
+  },
+  {
+    client:"Bell TV1",
+    category:"Television & Broadcast",
+    inline:true,
+    media:[
+      {type:"mp4",src:"https://video.wixstatic.com/video/c166fc_96e6abf7dde945df8a1cf201d4b2285d/1080p/mp4/file.mp4"},
+      {type:"youtube",id:"P9Iy41vja0I"},
+      {type:"youtube",id:"qSODG-l3YvE"},
+      {type:"youtube",id:"YysL1G13gkI"},
+      {type:"youtube",id:"v1iqYUDldVc"},
+      {type:"youtube",id:"VuLpGmdcXIQ"}
+    ],
+    cover:"https://static.wixstatic.com/media/c166fc_b128cb12c88c449f88f2a5fa83b970df~mv2.jpg/v1/fit/w_1600,h_1600,al_c/download.jpg",
+    desc:"We're working closely with the Bell TV1 team to create captivating community-driven promotional content. We will be utilizing our creative expertise to create promotional trailers and social content for their upcoming shows that will be broadcast throughout the TV1 network. We are incredibly excited to be working with such an accomplished team of individuals who are immensely passionate about their work."
+  },
+  {
+    client:"Finnect",
+    category:"Financial & Investment Content",
+    inline:true,
+    media:[{type:"mp4",src:"https://video.wixstatic.com/video/c166fc_b85d04d688ee4954a15b046cd07fadbb/1080p/mp4/file.mp4"}],
+    cover:"https://static.wixstatic.com/media/c166fc_2f6d859a3325417b8bbaea285bb72a24~mv2.jpg",
+    desc:"We've worked closely with Finnect to create engaging short-form financial content across social media. Based in Montreal, Finnect aims to empower financial advisors to build powerful online brands, and we're thrilled to be able to help them bring their content to life. Our primary focus is to help them in creating engaging short-form advertisements for clients in the financial sector. Driving traffic and establishing a brand presence for a variety of individuals looking to grow their client repertoire. Alongside providing video editing services, we've also assisted them in creating a robust content workflow that encompasses everything from videography to media storage and asset management."
+  },
+  {
+    client:"Echo Esports",
+    category:"Live Production & Esports",
+    inline:true,
+    images:[
+      "https://static.wixstatic.com/media/c166fc_98b43aedb47045f086d6d8d9b385e5a7~mv2.png/v1/fit/w_1600,h_1600,al_c/308880270_498091722328767_1695005996118476105_n.png",
+      "https://static.wixstatic.com/media/c166fc_bef2149706594df29c9617371e704442~mv2.jpg/v1/fit/w_1600,h_1600,al_c/GgIzVPAaIAACdOm.jpg",
+      "https://static.wixstatic.com/media/c166fc_c69778855d3b41ca86cc21d9731ff99b~mv2.jpeg/v1/fit/w_1600,h_1600,al_c/echo3.jpeg",
+      "https://static.wixstatic.com/media/c166fc_81ba62cb9ba04821ac2915d2a66b9b7f~mv2.jpeg/v1/fit/w_1600,h_1600,al_c/echo4.jpeg"
+    ],
+    cover:"https://static.wixstatic.com/media/c166fc_98b43aedb47045f086d6d8d9b385e5a7~mv2.png/v1/fit/w_1600,h_1600,al_c/308880270_498091722328767_1695005996118476105_n.png",
+    desc:"Over several years of close collaboration, we played a key role in elevating Echo Esports into the industry-leading Esports powerhouse that they are today. From producing bespoke animated assets for their brand, sponsors, and corporate partners, to directing high-impact live events and delivering cinema-quality promotional trailers, our creative and technical contributions helped drive their growth and expand their audience reach."
+  },
+  {
+    client:"Transtex",
+    category:"B2B Marketing & Promotional Content",
+    inline:true,
+    images:[
+      "https://static.wixstatic.com/media/c166fc_78040dc0d1d6421cbf80a317a3fd2536~mv2.jpg/v1/fit/w_1600,h_1600,al_c/Transtex.jpg",
+      "https://static.wixstatic.com/media/c166fc_627b145e37684bbe943b94944772af1e~mv2.jpg/v1/fit/w_1600,h_1600,al_c/Innovation_ValuePost.jpg",
+      "https://static.wixstatic.com/media/c166fc_87674b430c964a8d94831d57b1caffc6~mv2.jpg/v1/fit/w_1600,h_1600,al_c/CustomerDriven_ValuePost.jpg"
+    ],
+    cover:"https://static.wixstatic.com/media/c166fc_78040dc0d1d6421cbf80a317a3fd2536~mv2.jpg/v1/fit/w_1600,h_1600,al_c/Transtex.jpg",
+    desc:"We are proud of our ongoing collaboration with Transtex, a valued client who has entrusted us with a range of creative services. Our work includes delivering high-quality video editing, photography, videography, and graphic design to support their marketing initiatives. In addition, we've partnered with Transtex to produce instructional videos for their B2B products, as well as customer-focused interview and testimonial content."
+  },
+  {
+    client:"Ortlieb Media",
+    category:"Social Video Content",
+    inline:true,
+    images:[
+      "https://static.wixstatic.com/media/c166fc_8cb9bf26f4894a6ebb45d77d5aad6350~mv2.jpg/v1/fit/w_1600,h_1600,al_c/dsc06336.jpg"
+    ],
+    cover:"https://static.wixstatic.com/media/c166fc_8cb9bf26f4894a6ebb45d77d5aad6350~mv2.jpg/v1/fit/w_1600,h_1600,al_c/dsc06336.jpg",
+    desc:"We've had the opportunity of collaborating closely with Matt and his business to deliver high-quality video editing services for both him and his clients. These projects span a diverse range of content, from real estate ventures to promotional media for local businesses in the agriculture sector. Our support included video editing, color grading, and sound design, tailored to meet the specific needs of each project."
+  },
+  {
+    client:"Kize",
+    category:"Product Photography",
+    inline:true,
+    images:[
+      "https://static.wixstatic.com/media/c166fc_e364a13ce6a44348b4e8dc2f9cc0ca26~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_8ca9aab5e66849c59adcce9594d55450~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_284b5ea958a24d0285ce3a80b976fdf2~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_61e6c85c955f40109f4d58da9502446c~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_224f4667ef3c4c76b67574235a471007~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_ce742de9e21c439faf4651a33914c68b~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_0834ceb3c1524244bbe4d7768fc86a84~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_eac98bd02e474f5cba716bd30b91d42b~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_30018893e81d44c696e52f439b8fff53~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_05f93880f67a481282ad63f6218e3811~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_3ab7055fe00149fea004168ae62a3379~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_ea8fe826090c4beaacb273e668434615~mv2.jpeg"
+    ],
+    video:"https://video.wixstatic.com/video/c166fc_b83113e12bd5443c884e8c27f18c6135/720p/mp4/file.mp4",
+    cover:"https://static.wixstatic.com/media/c166fc_e364a13ce6a44348b4e8dc2f9cc0ca26~mv2.jpg",
+    desc:"Photography, product shots and a targeted launch campaign for this premium face mask startup at the height of the pandemic. The work was featured in Forbes and on Global News."
+  }
+];
+
+const list = document.getElementById('m1List');
+
+function buildExpandContent(p, stageEl) {
+  stageEl.innerHTML = '';
+  if (p.videos && p.videos.length) {
+    stageEl.style.aspectRatio = 'auto';
+    const grid = document.createElement('div');
+    grid.className = 'm1-expand-videos';
+    p.videos.forEach(id => {
+      const w = document.createElement('div'); w.className = 'm1-expand-video';
+      const f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0&modestbranding=1&playsinline=1';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      f.allowFullscreen = true;
+      w.appendChild(f); grid.appendChild(w);
+    });
+    stageEl.appendChild(grid);
+  } else if (p.media && p.media.length === 1) {
+    const item = p.media[0];
+    const wrap = document.createElement('div'); wrap.className = 'm1-expand-single';
+    if (item.type === 'mp4') {
+      const v = document.createElement('video');
+      v.src = item.src; v.controls = true; v.playsInline = true;
+      wrap.appendChild(v);
+    } else {
+      const f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + item.id + '?rel=0&modestbranding=1&playsinline=1';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      f.allowFullscreen = true;
+      wrap.appendChild(f);
+    }
+    stageEl.appendChild(wrap);
+  } else if (p.media && p.media.length > 1) {
+    stageEl.style.aspectRatio = 'auto';
+    const grid = document.createElement('div'); grid.className = 'm1-expand-videos';
+    p.media.forEach(item => {
+      const w = document.createElement('div'); w.className = 'm1-expand-video';
+      if (item.type === 'mp4') {
+        const v = document.createElement('video');
+        v.src = item.src; v.controls = true; v.playsInline = true;
+        w.appendChild(v);
+      } else {
+        const f = document.createElement('iframe');
+        f.src = 'https://www.youtube-nocookie.com/embed/' + item.id + '?rel=0&modestbranding=1&playsinline=1';
+        f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        f.allowFullscreen = true;
+        w.appendChild(f);
+      }
+      grid.appendChild(w);
+    });
+    stageEl.appendChild(grid);
+  } else if (p.images && p.images.length) {
+    stageEl.style.aspectRatio = 'auto';
+    const grid = document.createElement('div'); grid.className = 'm1-photo-grid';
+    p.images.forEach(src => {
+      const cell = document.createElement('div'); cell.className = 'm1-photo';
+      const img = document.createElement('img');
+      img.src = src; img.loading = 'lazy';
+      cell.appendChild(img); grid.appendChild(cell);
+    });
+    stageEl.appendChild(grid);
+    if (p.video) {
+      const vwrap = document.createElement('div'); vwrap.className = 'm1-expand-video-full';
+      const v = document.createElement('video');
+      v.src = p.video; v.controls = true; v.playsInline = true;
+      vwrap.appendChild(v); stageEl.appendChild(vwrap);
+    }
+  }
+}
+
+PROJECTS.forEach((p, i) => {
+  const wrap = document.createElement('div'); wrap.className = 'm1-card-wrap';
+  const card = document.createElement('div'); card.className = 'm1-card';
+  card.style.animationDelay = (i * 60) + 'ms';
+  card.innerHTML = '<div class="m1-card-media"><img class="m1-card-bg" src="' + p.cover + '" aria-hidden="true"><img class="m1-card-img m1-fit" loading="lazy" src="' + p.cover + '" alt="' + p.client + '"></div><div class="m1-card-body"><span class="m1-card-tag">' + p.category + '</span><div class="m1-card-name">' + p.client + '</div><p class="m1-card-desc">' + p.desc + '</p></div>';
+  wrap.appendChild(card);
+
+  const arrow = document.createElement('div'); arrow.className = 'm1-arrow';
+  arrow.innerHTML = '<div class="m1-arrow-wrap"><svg class="m1-arrow-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>';
+  const expand = document.createElement('div'); expand.className = 'm1-expand';
+  const stageId = 'stage-' + i;
+  expand.innerHTML = '<div class="m1-expand-inner"><div class="m1-expand-stage" id="' + stageId + '"></div></div>';
+  wrap.appendChild(arrow); wrap.appendChild(expand); list.appendChild(wrap);
+
+  function toggle() {
+    const open = expand.classList.contains('is-open');
+    if (open) {
+      expand.classList.remove('is-open');
+      card.classList.remove('expand-open');
+      arrow.classList.remove('is-open');
+      document.getElementById(stageId).innerHTML = '';
+    } else {
+      expand.classList.add('is-open');
+      card.classList.add('expand-open');
+      arrow.classList.add('is-open');
+      buildExpandContent(p, document.getElementById(stageId));
+    }
+  }
+  card.querySelector('.m1-card-media').addEventListener('click', toggle);
+  arrow.addEventListener('click', toggle);
+});
+</script>
+</body>
+</html>
