@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Careers — M1 ProMedia</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Hanken+Grotesk:wght@400;500;600&display=swap');
+  :root{
+    --accent:#e0a64b;
+    --bg:#0b0b0d;
+    --surface:#141418;
+    --text:#f4f1ea;
+    --muted:#8d8d96;
+    --line:rgba(255,255,255,.08);
+    --radius:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:var(--bg);color:var(--text);font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
+
+  /* ---- Shared ---- */
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+  .kicker{font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:18px}
+  .section{padding:90px 24px}
+  .line{border:none;border-top:1px solid var(--line)}
+
+  /* ---- Hero ---- */
+  .hero{
+    padding:110px 24px 120px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-glow{
+    position:absolute;
+    width:600px;height:600px;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(224,166,75,.07) 0%,transparent 70%);
+    top:-100px;right:-100px;
+    pointer-events:none;
+  }
+  .hero-title{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:700;line-height:.94;letter-spacing:-.03em;
+    font-size:clamp(52px,9vw,110px);
+    max-width:900px;
+    margin-bottom:32px;
+  }
+  .hero-title span{color:var(--accent)}
+  .hero-sub{
+    color:var(--muted);
+    font-size:clamp(15px,1.4vw,19px);
+    max-width:560px;
+    line-height:1.65;
+    margin-bottom:48px;
+  }
+  .btn{
+    font-family:'Hanken Grotesk',sans-serif;
+    font-size:14px;font-weight:600;
+    padding:14px 28px;border-radius:100px;
+    cursor:pointer;text-decoration:none;
+    transition:background .25s,color .25s,border-color .25s;
+    display:inline-block;
+  }
+  .btn-primary{background:var(--text);color:var(--bg);border:1px solid var(--text)}
+  .btn-primary:hover{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+  .btn-ghost:hover{border-color:rgba(255,255,255,.35)}
+
+  /* ---- Values ---- */
+  .values-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin-top:0;
+  }
+  @media(max-width:840px){.values-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.values-grid{grid-template-columns:1fr}}
+  .value-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:32px 28px;
+    opacity:0;transform:translateY(16px);
+    animation:m1in .55s cubic-bezier(.2,.7,.3,1) forwards;
+  }
+  @keyframes m1in{to{opacity:1;transform:none}}
+  .value-icon{
+    width:40px;height:40px;
+    border-radius:10px;
+    background:rgba(224,166,75,.1);
+    border:1px solid rgba(224,166,75,.2);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:20px;
+  }
+  .value-icon svg{width:18px;height:18px;stroke:var(--accent);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .value-title{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-size:18px;font-weight:600;
+    letter-spacing:-.01em;
+    margin-bottom:10px;
+  }
+  .value-desc{color:var(--muted);font-size:14px;line-height:1.65}
+
+  /* ---- Section title ---- */
+  .section-title{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;line-height:.96;letter-spacing:-.02em;
+    font-size:clamp(32px,5vw,58px);
+    margin-bottom:52px;
+  }
+
+  /* ---- Roles ---- */
+  .roles-list{display:flex;flex-direction:column;gap:12px}
+  .role-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:28px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    text-decoration:none;
+    transition:border-color .25s,background .25s;
+    opacity:0;transform:translateY(12px);
+    animation:m1in .55s cubic-bezier(.2,.7,.3,1) forwards;
+  }
+  .role-card:hover{border-color:rgba(255,255,255,.22);background:#1a1a1f}
+  @media(max-width:600px){.role-card{flex-direction:column;align-items:flex-start;gap:16px}}
+  .role-left{display:flex;flex-direction:column;gap:6px}
+  .role-tag{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .role-title{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-size:clamp(18px,2vw,24px);font-weight:600;
+    letter-spacing:-.01em;color:var(--text);
+  }
+  .role-meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:4px}
+  .role-badge{
+    font-size:12px;font-weight:500;
+    padding:4px 10px;border-radius:100px;
+    background:rgba(255,255,255,.05);
+    border:1px solid var(--line);
+    color:var(--muted);
+  }
+  .role-arrow{
+    width:40px;height:40px;border-radius:50%;
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    transition:border-color .25s,background .25s;
+  }
+  .role-card:hover .role-arrow{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.06)}
+  .role-arrow svg{width:16px;height:16px;stroke:var(--muted);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .25s}
+  .role-card:hover .role-arrow svg{stroke:var(--text)}
+
+  /* ---- Open app banner ---- */
+  .open-banner{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:32px 36px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:24px;
+    margin-top:12px;
+    opacity:0;transform:translateY(12px);
+    animation:m1in .55s cubic-bezier(.2,.7,.3,1) forwards;
+    animation-delay:400ms;
+  }
+  @media(max-width:600px){.open-banner{flex-direction:column;align-items:flex-start}}
+  .open-banner-text{display:flex;flex-direction:column;gap:6px}
+  .open-banner-title{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-size:clamp(16px,1.8vw,20px);font-weight:600;
+    letter-spacing:-.01em;
+  }
+  .open-banner-sub{color:var(--muted);font-size:14px;line-height:1.55;max-width:480px}
+
+  /* ---- CTA ---- */
+  .cta{
+    border-top:1px solid var(--line);
+    padding:90px 24px 100px;
+    text-align:center;
+  }
+  .cta-title{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;letter-spacing:-.02em;line-height:.96;
+    font-size:clamp(36px,6vw,72px);
+    margin-bottom:20px;
+  }
+  .cta-desc{
+    color:var(--muted);font-size:clamp(15px,1.4vw,18px);
+    max-width:500px;margin:0 auto 40px;line-height:1.6;
+  }
+  .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="wrap">
+    <div class="kicker">Careers at M1 ProMedia</div>
+    <h1 class="hero-title">Make work you're<br><span>proud of.</span></h1>
+    <p class="hero-sub">We're a small, focused team that cares about craft. If you're passionate about video, live events or digital media and want to work on projects that actually matter, we'd love to hear from you.</p>
+    <a class="btn btn-primary" href="#roles">View Open Roles</a>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="section" style="border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="kicker">Why M1</div>
+    <h2 class="section-title">What we're about.</h2>
+    <div class="values-grid">
+
+      <div class="value-card" style="animation-delay:0ms">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="value-title">Real projects, real impact</div>
+        <p class="value-desc">Every project we take on reaches a real audience. From broadcast television to game trailers seen by millions, your work here gets seen.</p>
+      </div>
+
+      <div class="value-card" style="animation-delay:70ms">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <div class="value-title">No filler, no fluff</div>
+        <p class="value-desc">We run lean on purpose. No pointless meetings, no bloated process. Just focused people doing good work and delivering on time.</p>
+      </div>
+
+      <div class="value-card" style="animation-delay:140ms">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="value-title">Collaborative by nature</div>
+        <p class="value-desc">We work closely together across every project. Your ideas get heard and your skills get developed alongside people who genuinely care about the craft.</p>
+      </div>
+
+      <div class="value-card" style="animation-delay:210ms">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="value-title">Quality over everything</div>
+        <p class="value-desc">We don't cut corners. Whether it's a 30-second social clip or a full live production, we hold ourselves to the same standard every single time.</p>
+      </div>
+
+      <div class="value-card" style="animation-delay:280ms">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="value-title">Based in Montreal</div>
+        <p class="value-desc">We're proudly Montreal-based with a network that spans broadcast, gaming and brand. Local roots, work that travels.</p>
+      </div>
+
+      <div class="value-card" style="animation-delay:350ms">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="value-title">Room to grow</div>
+        <p class="value-desc">We're growing and we want people who grow with us. Take ownership, build new skills and leave your mark on a company that's just getting started.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ROLES -->
+<section class="section" id="roles" style="border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="kicker">Open Positions</div>
+    <h2 class="section-title">We're hiring.</h2>
+    <div class="roles-list">
+
+      <a class="role-card" href="mailto:mitch@m1promedia.com?subject=Application — Video Editor" style="animation-delay:0ms">
+        <div class="role-left">
+          <span class="role-tag">Post Production</span>
+          <div class="role-title">Video Editor</div>
+          <div class="role-meta">
+            <span class="role-badge">Montreal, QC</span>
+            <span class="role-badge">Full-time / Freelance</span>
+          </div>
+        </div>
+        <div class="role-arrow">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <a class="role-card" href="mailto:mitch@m1promedia.com?subject=Application — Motion Designer" style="animation-delay:80ms">
+        <div class="role-left">
+          <span class="role-tag">Design & Motion</span>
+          <div class="role-title">Motion Designer</div>
+          <div class="role-meta">
+            <span class="role-badge">Montreal, QC</span>
+            <span class="role-badge">Freelance</span>
+          </div>
+        </div>
+        <div class="role-arrow">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <a class="role-card" href="mailto:mitch@m1promedia.com?subject=Application — Videographer" style="animation-delay:160ms">
+        <div class="role-left">
+          <span class="role-tag">Production</span>
+          <div class="role-title">Videographer / Camera Operator</div>
+          <div class="role-meta">
+            <span class="role-badge">Montreal, QC</span>
+            <span class="role-badge">Freelance</span>
+          </div>
+        </div>
+        <div class="role-arrow">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <a class="role-card" href="mailto:mitch@m1promedia.com?subject=Application — Live Event Technician" style="animation-delay:240ms">
+        <div class="role-left">
+          <span class="role-tag">Live Events</span>
+          <div class="role-title">Live Event Technician</div>
+          <div class="role-meta">
+            <span class="role-badge">Montreal, QC</span>
+            <span class="role-badge">Freelance</span>
+          </div>
+        </div>
+        <div class="role-arrow">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <!-- Open application -->
+      <div class="open-banner">
+        <div class="open-banner-text">
+          <div class="open-banner-title">Don't see your role listed?</div>
+          <p class="open-banner-sub">We're always open to hearing from talented people. If you think you'd be a good fit for what we do, send us a message and tell us what you bring to the table.</p>
+        </div>
+        <a class="btn btn-ghost" href="mailto:mitch@m1promedia.com?subject=General Application" style="white-space:nowrap;flex-shrink:0">Get In Touch</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="wrap">
+    <h2 class="cta-title">Ready to apply?</h2>
+    <p class="cta-desc">Send us your resume and a few examples of your work. We review every application personally.</p>
+    <div class="cta-actions">
+      <a class="btn btn-primary" href="mailto:mitch@m1promedia.com?subject=Job Application">mitch@m1promedia.com</a>
+      <a class="btn btn-ghost" href="https://www.m1promedia.com/ourwork" target="_top">See Our Work</a>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
