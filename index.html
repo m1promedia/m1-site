@@ -62,8 +62,7 @@
   .m1-expand-close svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
   .m1-section-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:12px;margin-top:20px}
   .m1-section-label:first-child{margin-top:0}
-
-  /* Photo lightbox */
+  .m1-mixed-photos{margin-top:12px}
   .m1-photo-lb{display:none;position:fixed;inset:0;z-index:9999;background:rgba(6,6,8,.96);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:20px}
   .m1-photo-lb.is-open{display:flex;animation:m1fade .2s ease}
   @keyframes m1fade{from{opacity:0}to{opacity:1}}
@@ -86,7 +85,6 @@
   </div>
 </div>
 
-<!-- Photo lightbox -->
 <div class="m1-photo-lb" id="photoLb">
   <button class="m1-photo-lb-close" id="photoLbClose">&#10005;</button>
   <button class="m1-photo-lb-nav m1-photo-lb-prev" id="photoLbPrev">&#8249;</button>
@@ -165,10 +163,12 @@ const PROJECTS = [
     client:"Transtex",
     category:"B2B Marketing & Promotional Content",
     inline:true,
+    media:[
+      {type:"mp4",src:"https://video.wixstatic.com/video/c166fc_7efe0abc203843f4b7fab85ff248b141/1080p/mp4/file.mp4"}
+    ],
     images:[
-      "https://static.wixstatic.com/media/c166fc_78040dc0d1d6421cbf80a317a3fd2536~mv2.jpg/v1/fit/w_1600,h_1600,al_c/Transtex.jpg",
-      "https://static.wixstatic.com/media/c166fc_627b145e37684bbe943b94944772af1e~mv2.jpg/v1/fit/w_1600,h_1600,al_c/Innovation_ValuePost.jpg",
-      "https://static.wixstatic.com/media/c166fc_87674b430c964a8d94831d57b1caffc6~mv2.jpg/v1/fit/w_1600,h_1600,al_c/CustomerDriven_ValuePost.jpg"
+      "https://static.wixstatic.com/media/c166fc_627b145e37684bbe943b94944772af1e~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_87674b430c964a8d94831d57b1caffc6~mv2.jpg"
     ],
     cover:"https://static.wixstatic.com/media/c166fc_78040dc0d1d6421cbf80a317a3fd2536~mv2.jpg/v1/fit/w_1600,h_1600,al_c/Transtex.jpg",
     desc:"We are proud of our ongoing collaboration with Transtex, a valued client who has entrusted us with a range of creative services. Our work includes delivering high-quality video editing, photography, videography, and graphic design to support their marketing initiatives. In addition, we've partnered with Transtex to produce instructional videos for their B2B products, as well as customer-focused interview and testimonial content."
@@ -208,45 +208,32 @@ const PROJECTS = [
   }
 ];
 
-// Photo lightbox
 const photoLb = document.getElementById('photoLb');
 const photoLbImg = document.getElementById('photoLbImg');
 const photoLbCount = document.getElementById('photoLbCount');
 let lbImages = [], lbIndex = 0;
 
 function openPhotoLb(images, index) {
-  lbImages = images;
-  lbIndex = index;
+  lbImages = images; lbIndex = index;
   updatePhotoLb();
   photoLb.classList.add('is-open');
   document.body.style.overflow = 'hidden';
 }
-
 function updatePhotoLb() {
   photoLbImg.src = lbImages[lbIndex];
   photoLbCount.textContent = (lbIndex + 1) + ' / ' + lbImages.length;
   document.getElementById('photoLbPrev').style.display = lbImages.length > 1 ? 'flex' : 'none';
   document.getElementById('photoLbNext').style.display = lbImages.length > 1 ? 'flex' : 'none';
 }
-
 function closePhotoLb() {
   photoLb.classList.remove('is-open');
   photoLbImg.src = '';
   document.body.style.overflow = '';
 }
-
 document.getElementById('photoLbClose').addEventListener('click', closePhotoLb);
 photoLb.addEventListener('click', e => { if (e.target === photoLb) closePhotoLb(); });
-document.getElementById('photoLbPrev').addEventListener('click', e => {
-  e.stopPropagation();
-  lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length;
-  updatePhotoLb();
-});
-document.getElementById('photoLbNext').addEventListener('click', e => {
-  e.stopPropagation();
-  lbIndex = (lbIndex + 1) % lbImages.length;
-  updatePhotoLb();
-});
+document.getElementById('photoLbPrev').addEventListener('click', e => { e.stopPropagation(); lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; updatePhotoLb(); });
+document.getElementById('photoLbNext').addEventListener('click', e => { e.stopPropagation(); lbIndex = (lbIndex + 1) % lbImages.length; updatePhotoLb(); });
 document.addEventListener('keydown', e => {
   if (!photoLb.classList.contains('is-open')) return;
   if (e.key === 'Escape') closePhotoLb();
@@ -254,51 +241,66 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbImages.length; updatePhotoLb(); }
 });
 
-const list = document.getElementById('m1List');
+function buildPhotoGrid(images, stageEl, wrapClass) {
+  const grid = document.createElement('div');
+  grid.className = 'm1-photo-grid' + (wrapClass ? ' ' + wrapClass : '');
+  images.forEach((src, idx) => {
+    const cell = document.createElement('div'); cell.className = 'm1-photo';
+    const img = document.createElement('img'); img.src = src; img.loading = 'lazy';
+    cell.appendChild(img);
+    cell.addEventListener('click', () => openPhotoLb(images, idx));
+    grid.appendChild(cell);
+  });
+  stageEl.appendChild(grid);
+}
 
 function buildExpandContent(p, stageEl) {
   stageEl.innerHTML = '';
   const hasMixed = p.media && p.media.length && p.images && p.images.length;
 
   if (hasMixed) {
-    const videoLabel = document.createElement('div');
-    videoLabel.className = 'm1-section-label';
-    videoLabel.textContent = 'Videos';
-    stageEl.appendChild(videoLabel);
-
-    const grid = document.createElement('div'); grid.className = 'm1-expand-videos';
-    p.media.forEach(item => {
-      const w = document.createElement('div'); w.className = 'm1-expand-video';
+    if (p.media.length === 1) {
+      // Single video full width, then photo grid below
+      const item = p.media[0];
+      const vwrap = document.createElement('div'); vwrap.className = 'm1-expand-single';
       if (item.type === 'mp4') {
         const v = document.createElement('video');
         v.src = item.src; v.controls = true; v.playsInline = true;
-        w.appendChild(v);
+        vwrap.appendChild(v);
       } else {
         const f = document.createElement('iframe');
         f.src = 'https://www.youtube-nocookie.com/embed/' + item.id + '?rel=0&modestbranding=1&playsinline=1';
         f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
         f.allowFullscreen = true;
-        w.appendChild(f);
+        vwrap.appendChild(f);
       }
-      grid.appendChild(w);
-    });
-    stageEl.appendChild(grid);
-
-    const photoLabel = document.createElement('div');
-    photoLabel.className = 'm1-section-label';
-    photoLabel.textContent = 'Photos';
-    stageEl.appendChild(photoLabel);
-
-    const photoGrid = document.createElement('div'); photoGrid.className = 'm1-photo-grid';
-    p.images.forEach((src, idx) => {
-      const cell = document.createElement('div'); cell.className = 'm1-photo';
-      const img = document.createElement('img');
-      img.src = src; img.loading = 'lazy';
-      cell.appendChild(img);
-      cell.addEventListener('click', () => openPhotoLb(p.images, idx));
-      photoGrid.appendChild(cell);
-    });
-    stageEl.appendChild(photoGrid);
+      stageEl.appendChild(vwrap);
+      buildPhotoGrid(p.images, stageEl, 'm1-mixed-photos');
+    } else {
+      // Multiple videos in grid with labels, then photo grid
+      const videoLabel = document.createElement('div');
+      videoLabel.className = 'm1-section-label'; videoLabel.textContent = 'Videos';
+      stageEl.appendChild(videoLabel);
+      const grid = document.createElement('div'); grid.className = 'm1-expand-videos';
+      p.media.forEach(item => {
+        const w = document.createElement('div'); w.className = 'm1-expand-video';
+        if (item.type === 'mp4') {
+          const v = document.createElement('video');
+          v.src = item.src; v.controls = true; v.playsInline = true; w.appendChild(v);
+        } else {
+          const f = document.createElement('iframe');
+          f.src = 'https://www.youtube-nocookie.com/embed/' + item.id + '?rel=0&modestbranding=1&playsinline=1';
+          f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+          f.allowFullscreen = true; w.appendChild(f);
+        }
+        grid.appendChild(w);
+      });
+      stageEl.appendChild(grid);
+      const photoLabel = document.createElement('div');
+      photoLabel.className = 'm1-section-label'; photoLabel.textContent = 'Photos';
+      stageEl.appendChild(photoLabel);
+      buildPhotoGrid(p.images, stageEl, null);
+    }
 
   } else if (p.videos && p.videos.length) {
     const grid = document.createElement('div'); grid.className = 'm1-expand-videos';
@@ -307,8 +309,7 @@ function buildExpandContent(p, stageEl) {
       const f = document.createElement('iframe');
       f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0&modestbranding=1&playsinline=1';
       f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-      f.allowFullscreen = true;
-      w.appendChild(f); grid.appendChild(w);
+      f.allowFullscreen = true; w.appendChild(f); grid.appendChild(w);
     });
     stageEl.appendChild(grid);
 
@@ -317,14 +318,12 @@ function buildExpandContent(p, stageEl) {
     const wrap = document.createElement('div'); wrap.className = 'm1-expand-single';
     if (item.type === 'mp4') {
       const v = document.createElement('video');
-      v.src = item.src; v.controls = true; v.playsInline = true;
-      wrap.appendChild(v);
+      v.src = item.src; v.controls = true; v.playsInline = true; wrap.appendChild(v);
     } else {
       const f = document.createElement('iframe');
       f.src = 'https://www.youtube-nocookie.com/embed/' + item.id + '?rel=0&modestbranding=1&playsinline=1';
       f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-      f.allowFullscreen = true;
-      wrap.appendChild(f);
+      f.allowFullscreen = true; wrap.appendChild(f);
     }
     stageEl.appendChild(wrap);
 
@@ -334,30 +333,19 @@ function buildExpandContent(p, stageEl) {
       const w = document.createElement('div'); w.className = 'm1-expand-video';
       if (item.type === 'mp4') {
         const v = document.createElement('video');
-        v.src = item.src; v.controls = true; v.playsInline = true;
-        w.appendChild(v);
+        v.src = item.src; v.controls = true; v.playsInline = true; w.appendChild(v);
       } else {
         const f = document.createElement('iframe');
         f.src = 'https://www.youtube-nocookie.com/embed/' + item.id + '?rel=0&modestbranding=1&playsinline=1';
         f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-        f.allowFullscreen = true;
-        w.appendChild(f);
+        f.allowFullscreen = true; w.appendChild(f);
       }
       grid.appendChild(w);
     });
     stageEl.appendChild(grid);
 
   } else if (p.images && p.images.length) {
-    const grid = document.createElement('div'); grid.className = 'm1-photo-grid';
-    p.images.forEach((src, idx) => {
-      const cell = document.createElement('div'); cell.className = 'm1-photo';
-      const img = document.createElement('img');
-      img.src = src; img.loading = 'lazy';
-      cell.appendChild(img);
-      cell.addEventListener('click', () => openPhotoLb(p.images, idx));
-      grid.appendChild(cell);
-    });
-    stageEl.appendChild(grid);
+    buildPhotoGrid(p.images, stageEl, null);
     if (p.video) {
       const vwrap = document.createElement('div'); vwrap.className = 'm1-expand-video-full';
       const v = document.createElement('video');
@@ -366,6 +354,8 @@ function buildExpandContent(p, stageEl) {
     }
   }
 }
+
+const list = document.getElementById('m1List');
 
 PROJECTS.forEach((p, i) => {
   const wrap = document.createElement('div'); wrap.className = 'm1-card-wrap';
