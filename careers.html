@@ -17,181 +17,50 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{background:var(--bg);color:var(--text);font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
-
-  /* ---- Shared ---- */
   .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
   .kicker{font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:18px}
   .section{padding:90px 24px}
-  .line{border:none;border-top:1px solid var(--line)}
-
-  /* ---- Hero ---- */
-  .hero{
-    padding:110px 24px 120px;
-    border-bottom:1px solid var(--line);
-    position:relative;
-    overflow:hidden;
-  }
-  .hero-glow{
-    position:absolute;
-    width:600px;height:600px;
-    border-radius:50%;
-    background:radial-gradient(circle,rgba(224,166,75,.07) 0%,transparent 70%);
-    top:-100px;right:-100px;
-    pointer-events:none;
-  }
-  .hero-title{
-    font-family:'Bricolage Grotesque',sans-serif;
-    font-weight:700;line-height:.94;letter-spacing:-.03em;
-    font-size:clamp(52px,9vw,110px);
-    max-width:900px;
-    margin-bottom:32px;
-  }
+  .hero{padding:110px 24px 120px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+  .hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(224,166,75,.07) 0%,transparent 70%);top:-100px;right:-100px;pointer-events:none}
+  .hero-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;line-height:.94;letter-spacing:-.03em;font-size:clamp(52px,9vw,110px);max-width:900px;margin-bottom:32px}
   .hero-title span{color:var(--accent)}
-  .hero-sub{
-    color:var(--muted);
-    font-size:clamp(15px,1.4vw,19px);
-    max-width:560px;
-    line-height:1.65;
-    margin-bottom:48px;
-  }
-  .btn{
-    font-family:'Hanken Grotesk',sans-serif;
-    font-size:14px;font-weight:600;
-    padding:14px 28px;border-radius:100px;
-    cursor:pointer;text-decoration:none;
-    transition:background .25s,color .25s,border-color .25s;
-    display:inline-block;
-  }
+  .hero-sub{color:var(--muted);font-size:clamp(15px,1.4vw,19px);max-width:560px;line-height:1.65;margin-bottom:48px}
+  .btn{font-family:'Hanken Grotesk',sans-serif;font-size:14px;font-weight:600;padding:14px 28px;border-radius:100px;cursor:pointer;text-decoration:none;transition:background .25s,color .25s,border-color .25s;display:inline-block}
   .btn-primary{background:var(--text);color:var(--bg);border:1px solid var(--text)}
   .btn-primary:hover{background:var(--accent);border-color:var(--accent);color:var(--bg)}
   .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
   .btn-ghost:hover{border-color:rgba(255,255,255,.35)}
-
-  /* ---- Values ---- */
-  .values-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:16px;
-    margin-top:0;
-  }
+  .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   @media(max-width:840px){.values-grid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:520px){.values-grid{grid-template-columns:1fr}}
-  .value-card{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:32px 28px;
-    opacity:0;transform:translateY(16px);
-    animation:m1in .55s cubic-bezier(.2,.7,.3,1) forwards;
-  }
+  .value-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:32px 28px;opacity:0;transform:translateY(16px);animation:m1in .55s cubic-bezier(.2,.7,.3,1) forwards}
   @keyframes m1in{to{opacity:1;transform:none}}
-  .value-icon{
-    width:40px;height:40px;
-    border-radius:10px;
-    background:rgba(224,166,75,.1);
-    border:1px solid rgba(224,166,75,.2);
-    display:flex;align-items:center;justify-content:center;
-    margin-bottom:20px;
-  }
+  .value-icon{width:40px;height:40px;border-radius:10px;background:rgba(224,166,75,.1);border:1px solid rgba(224,166,75,.2);display:flex;align-items:center;justify-content:center;margin-bottom:20px}
   .value-icon svg{width:18px;height:18px;stroke:var(--accent);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
-  .value-title{
-    font-family:'Bricolage Grotesque',sans-serif;
-    font-size:18px;font-weight:600;
-    letter-spacing:-.01em;
-    margin-bottom:10px;
-  }
+  .value-title{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:600;letter-spacing:-.01em;margin-bottom:10px}
   .value-desc{color:var(--muted);font-size:14px;line-height:1.65}
-
-  /* ---- Section title ---- */
-  .section-title{
-    font-family:'Bricolage Grotesque',sans-serif;
-    font-weight:600;line-height:.96;letter-spacing:-.02em;
-    font-size:clamp(32px,5vw,58px);
-    margin-bottom:52px;
-  }
-
-  /* ---- Roles ---- */
+  .section-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;line-height:.96;letter-spacing:-.02em;font-size:clamp(32px,5vw,58px);margin-bottom:52px}
   .roles-list{display:flex;flex-direction:column;gap:12px}
-  .role-card{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:28px 32px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:24px;
-    text-decoration:none;
-    transition:border-color .25s,background .25s;
-    opacity:0;transform:translateY(12px);
-    animation:m1in .55s cubic-bezier(.2,.7,.3,1) forwards;
-  }
+  .role-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;text-decoration:none;transition:border-color .25s,background .25s;opacity:0;transform:translateY(12px);animation:m1in .55s cubic-bezier(.2,.7,.3,1) forwards}
   .role-card:hover{border-color:rgba(255,255,255,.22);background:#1a1a1f}
   @media(max-width:600px){.role-card{flex-direction:column;align-items:flex-start;gap:16px}}
   .role-left{display:flex;flex-direction:column;gap:6px}
   .role-tag{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600}
-  .role-title{
-    font-family:'Bricolage Grotesque',sans-serif;
-    font-size:clamp(18px,2vw,24px);font-weight:600;
-    letter-spacing:-.01em;color:var(--text);
-  }
-  .role-meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:4px}
-  .role-badge{
-    font-size:12px;font-weight:500;
-    padding:4px 10px;border-radius:100px;
-    background:rgba(255,255,255,.05);
-    border:1px solid var(--line);
-    color:var(--muted);
-  }
-  .role-arrow{
-    width:40px;height:40px;border-radius:50%;
-    border:1px solid var(--line);
-    display:flex;align-items:center;justify-content:center;
-    flex-shrink:0;
-    transition:border-color .25s,background .25s;
-  }
+  .role-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(18px,2vw,24px);font-weight:600;letter-spacing:-.01em;color:var(--text)}
+  .role-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .role-badge{font-size:12px;font-weight:500;padding:4px 10px;border-radius:100px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--muted)}
+  .role-arrow{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .25s,background .25s}
   .role-card:hover .role-arrow{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.06)}
   .role-arrow svg{width:16px;height:16px;stroke:var(--muted);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .25s}
   .role-card:hover .role-arrow svg{stroke:var(--text)}
-
-  /* ---- Open app banner ---- */
-  .open-banner{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:32px 36px;
-    display:flex;align-items:center;justify-content:space-between;
-    gap:24px;
-    margin-top:12px;
-    opacity:0;transform:translateY(12px);
-    animation:m1in .55s cubic-bezier(.2,.7,.3,1) forwards;
-    animation-delay:400ms;
-  }
+  .open-banner{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:32px 36px;display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:12px;opacity:0;transform:translateY(12px);animation:m1in .55s cubic-bezier(.2,.7,.3,1) forwards;animation-delay:160ms}
   @media(max-width:600px){.open-banner{flex-direction:column;align-items:flex-start}}
   .open-banner-text{display:flex;flex-direction:column;gap:6px}
-  .open-banner-title{
-    font-family:'Bricolage Grotesque',sans-serif;
-    font-size:clamp(16px,1.8vw,20px);font-weight:600;
-    letter-spacing:-.01em;
-  }
+  .open-banner-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(16px,1.8vw,20px);font-weight:600;letter-spacing:-.01em}
   .open-banner-sub{color:var(--muted);font-size:14px;line-height:1.55;max-width:480px}
-
-  /* ---- CTA ---- */
-  .cta{
-    border-top:1px solid var(--line);
-    padding:90px 24px 100px;
-    text-align:center;
-  }
-  .cta-title{
-    font-family:'Bricolage Grotesque',sans-serif;
-    font-weight:600;letter-spacing:-.02em;line-height:.96;
-    font-size:clamp(36px,6vw,72px);
-    margin-bottom:20px;
-  }
-  .cta-desc{
-    color:var(--muted);font-size:clamp(15px,1.4vw,18px);
-    max-width:500px;margin:0 auto 40px;line-height:1.6;
-  }
+  .cta{border-top:1px solid var(--line);padding:90px 24px 100px;text-align:center}
+  .cta-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;letter-spacing:-.02em;line-height:.96;font-size:clamp(36px,6vw,72px);margin-bottom:20px}
+  .cta-desc{color:var(--muted);font-size:clamp(15px,1.4vw,18px);max-width:500px;margin:0 auto 40px;line-height:1.6}
   .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 </style>
 </head>
@@ -280,21 +149,10 @@
           <div class="role-title">Video Editor</div>
           <div class="role-meta">
             <span class="role-badge">Montreal, QC</span>
-            <span class="role-badge">Full-time / Freelance</span>
-          </div>
-        </div>
-        <div class="role-arrow">
-          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-        </div>
-      </a>
-
-      <a class="role-card" href="mailto:mitch@m1promedia.com?subject=Application — Motion Designer" style="animation-delay:80ms">
-        <div class="role-left">
-          <span class="role-tag">Design & Motion</span>
-          <div class="role-title">Motion Designer</div>
-          <div class="role-meta">
-            <span class="role-badge">Montreal, QC</span>
+            <span class="role-badge">Full-time</span>
+            <span class="role-badge">Part-time</span>
             <span class="role-badge">Freelance</span>
+            <span class="role-badge">Contract</span>
           </div>
         </div>
         <div class="role-arrow">
@@ -302,35 +160,6 @@
         </div>
       </a>
 
-      <a class="role-card" href="mailto:mitch@m1promedia.com?subject=Application — Videographer" style="animation-delay:160ms">
-        <div class="role-left">
-          <span class="role-tag">Production</span>
-          <div class="role-title">Videographer / Camera Operator</div>
-          <div class="role-meta">
-            <span class="role-badge">Montreal, QC</span>
-            <span class="role-badge">Freelance</span>
-          </div>
-        </div>
-        <div class="role-arrow">
-          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-        </div>
-      </a>
-
-      <a class="role-card" href="mailto:mitch@m1promedia.com?subject=Application — Live Event Technician" style="animation-delay:240ms">
-        <div class="role-left">
-          <span class="role-tag">Live Events</span>
-          <div class="role-title">Live Event Technician</div>
-          <div class="role-meta">
-            <span class="role-badge">Montreal, QC</span>
-            <span class="role-badge">Freelance</span>
-          </div>
-        </div>
-        <div class="role-arrow">
-          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-        </div>
-      </a>
-
-      <!-- Open application -->
       <div class="open-banner">
         <div class="open-banner-text">
           <div class="open-banner-title">Don't see your role listed?</div>
