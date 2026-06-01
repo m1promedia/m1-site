@@ -41,19 +41,51 @@
   .value-desc{color:var(--muted);font-size:14px;line-height:1.65}
   .section-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;line-height:.96;letter-spacing:-.02em;font-size:clamp(32px,5vw,58px);margin-bottom:52px}
   .roles-list{display:flex;flex-direction:column;gap:12px}
-  .role-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;text-decoration:none;transition:border-color .25s,background .25s;opacity:0;transform:translateY(12px);animation:m1in .55s cubic-bezier(.2,.7,.3,1) forwards}
+
+  /* Role card */
+  .role-wrap{display:flex;flex-direction:column}
+  .role-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;cursor:pointer;transition:border-color .25s,background .25s;opacity:0;transform:translateY(12px);animation:m1in .55s cubic-bezier(.2,.7,.3,1) forwards}
   .role-card:hover{border-color:rgba(255,255,255,.22);background:#1a1a1f}
+  .role-card.is-open{border-radius:var(--radius) var(--radius) 0 0;border-bottom-color:transparent;background:#1a1a1f}
   @media(max-width:600px){.role-card{flex-direction:column;align-items:flex-start;gap:16px}}
   .role-left{display:flex;flex-direction:column;gap:6px}
   .role-tag{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600}
   .role-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(18px,2vw,24px);font-weight:600;letter-spacing:-.01em;color:var(--text)}
   .role-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
   .role-badge{font-size:12px;font-weight:500;padding:4px 10px;border-radius:100px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--muted)}
-  .role-arrow{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .25s,background .25s}
+  .role-arrow{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .25s,background .25s,transform .45s cubic-bezier(.2,.7,.3,1)}
   .role-card:hover .role-arrow{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.06)}
+  .role-card.is-open .role-arrow{transform:rotate(180deg);border-color:rgba(255,255,255,.3)}
   .role-arrow svg{width:16px;height:16px;stroke:var(--muted);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .25s}
-  .role-card:hover .role-arrow svg{stroke:var(--text)}
-  .open-banner{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:32px 36px;display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:12px;opacity:0;transform:translateY(12px);animation:m1in .55s cubic-bezier(.2,.7,.3,1) forwards;animation-delay:160ms}
+  .role-card:hover .role-arrow svg,.role-card.is-open .role-arrow svg{stroke:var(--text)}
+
+  /* Job description expand */
+  .role-expand{overflow:hidden;max-height:0;opacity:0;background:var(--surface);border:1px solid var(--line);border-top:none;border-radius:0 0 var(--radius) var(--radius);transition:max-height .6s cubic-bezier(.2,.7,.3,1),opacity .35s ease}
+  .role-expand.is-open{max-height:6000px;opacity:1}
+  .role-expand-inner{padding:36px 40px 40px}
+  @media(max-width:640px){.role-expand-inner{padding:24px}}
+
+  /* Job description typography */
+  .jd-lang-toggle{display:flex;gap:8px;margin-bottom:32px}
+  .jd-lang-btn{font-family:'Hanken Grotesk',sans-serif;font-size:12px;font-weight:600;padding:6px 16px;border-radius:100px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--muted);transition:all .2s;letter-spacing:.04em}
+  .jd-lang-btn.active{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+  .jd-content{display:none}
+  .jd-content.active{display:block}
+  .jd-intro{color:var(--muted);font-size:15px;line-height:1.75;margin-bottom:32px}
+  .jd-section{margin-bottom:28px}
+  .jd-section-title{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:600;letter-spacing:-.01em;margin-bottom:14px;color:var(--text)}
+  .jd-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .jd-list li{display:flex;gap:12px;color:var(--muted);font-size:14px;line-height:1.7}
+  .jd-list li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:8px}
+  .jd-list li strong{color:var(--text);font-weight:600}
+  .jd-divider{border:none;border-top:1px solid var(--line);margin:36px 0}
+  .jd-apply{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:36px;padding-top:32px;border-top:1px solid var(--line)}
+  @media(max-width:600px){.jd-apply{flex-direction:column;align-items:flex-start}}
+  .jd-apply-text{font-size:14px;color:var(--muted);line-height:1.6;max-width:460px}
+  .jd-apply-text strong{color:var(--text);font-weight:600}
+
+  /* Open banner */
+  .open-banner{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:32px 36px;display:flex;align-items:center;justify-content:space-between;gap:24px;opacity:0;transform:translateY(12px);animation:m1in .55s cubic-bezier(.2,.7,.3,1) forwards;animation-delay:160ms}
   @media(max-width:600px){.open-banner{flex-direction:column;align-items:flex-start}}
   .open-banner-text{display:flex;flex-direction:column;gap:6px}
   .open-banner-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(16px,1.8vw,20px);font-weight:600;letter-spacing:-.01em}
@@ -138,22 +170,114 @@
     <h2 class="section-title">We're hiring.</h2>
     <div class="roles-list">
 
-      <a class="role-card" href="mailto:mitch@m1promedia.com?subject=Application — Video Editor" style="animation-delay:0ms">
-        <div class="role-left">
-          <span class="role-tag">Post Production</span>
-          <div class="role-title">Video Editor</div>
-          <div class="role-meta">
-            <span class="role-badge">Montreal, QC</span>
-            <span class="role-badge">Full-time</span>
-            <span class="role-badge">Part-time</span>
-            <span class="role-badge">Freelance</span>
-            <span class="role-badge">Contract</span>
+      <div class="role-wrap">
+        <div class="role-card" id="roleCard" style="animation-delay:0ms">
+          <div class="role-left">
+            <span class="role-tag">Post Production</span>
+            <div class="role-title">Short-form Video Editor</div>
+            <div class="role-meta">
+              <span class="role-badge">Montreal, QC</span>
+              <span class="role-badge">Full-time</span>
+              <span class="role-badge">Part-time</span>
+              <span class="role-badge">Freelance</span>
+              <span class="role-badge">Contract</span>
+            </div>
+          </div>
+          <div class="role-arrow">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
         </div>
-        <div class="role-arrow">
-          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+
+        <div class="role-expand" id="roleExpand">
+          <div class="role-expand-inner">
+
+            <!-- Language toggle -->
+            <div class="jd-lang-toggle">
+              <button class="jd-lang-btn active" onclick="setLang('en')">🇬🇧 English</button>
+              <button class="jd-lang-btn" onclick="setLang('fr')">🇫🇷 Français</button>
+            </div>
+
+            <!-- English -->
+            <div class="jd-content active" id="jd-en">
+              <p class="jd-intro">Are you a highly creative, bilingual (French/English) editor with short-form video experience? We need a strategic editor who can expertly pivot between distinct brand aesthetics — from fashion Reels to professional finance Shorts.</p>
+
+              <div class="jd-section">
+                <div class="jd-section-title">The Core Role: Strategic Social Editing</div>
+                <ul class="jd-list">
+                  <li><span><strong>Client Content Production:</strong> Edit raw footage into polished, high-retention vertical videos, ensuring the tone and style perfectly match each client's brand.</span></li>
+                  <li><span><strong>🇫🇷/🇬🇧 Bilingual Assets:</strong> Meticulously apply dynamic text, captions, and trending visuals (jump-cuts, SFX) in both English and French content.</span></li>
+                </ul>
+              </div>
+
+              <div class="jd-section">
+                <div class="jd-section-title">Mandatory Requirements (Non-Negotiable)</div>
+                <ul class="jd-list">
+                  <li><span><strong>Proven Social Video Experience:</strong> A strong portfolio that clearly showcases your ability to produce high-retention, vertical short-form video content across varied styles and tones.</span></li>
+                  <li><span><strong>Professional Bilingual Fluency:</strong> Essential for editing and applying text/captions in both French and English (spoken and written).</span></li>
+                  <li><span><strong>Strategic Insight:</strong> Deep functional knowledge of social media video dynamics, algorithm performance, and current trends (and when to use them).</span></li>
+                  <li><span><strong>Editing Expertise:</strong> Skill in an industry-standard NLE (e.g., Adobe Premiere Pro, DaVinci Resolve, CapCut).</span></li>
+                  <li><span><strong>Agile Work Ethic:</strong> Ability to manage multiple concurrent projects and meet tight deadlines.</span></li>
+                </ul>
+              </div>
+
+              <div class="jd-section">
+                <div class="jd-section-title">Advantageous Skills</div>
+                <ul class="jd-list">
+                  <li><span>Familiarity with basic motion graphics (After Effects) or graphic design tools (Canva/Photoshop).</span></li>
+                  <li><span>Experience with compliance and regulatory considerations (e.g., finance industry content).</span></li>
+                </ul>
+              </div>
+
+              <p class="jd-intro" style="margin-bottom:0"><strong style="color:var(--text)">Background:</strong> 0–2 years of professional editing experience. Substantial freelance or robust personal projects focused on client-style briefs are highly valued. If you're ready to translate diverse client needs into powerful, professional video performance, apply and share your portfolio today.</p>
+
+              <div class="jd-apply">
+                <p class="jd-apply-text"><strong>Ready to apply?</strong> Send us your resume and portfolio. We review every application personally.</p>
+                <a class="btn btn-primary" href="mailto:mitch@m1promedia.com?subject=Application — Short-form Video Editor">Apply Now</a>
+              </div>
+            </div>
+
+            <!-- French -->
+            <div class="jd-content" id="jd-fr">
+              <p class="jd-intro">Êtes-vous un(e) monteur(euse) bilingue (français/anglais) très créatif(ve) avec de l'expérience en vidéo court format? Nous cherchons un(e) éditeur(euse) stratégique qui peut pivoter avec aisance entre des esthétiques de marque distinctes, allant des Reels de mode aux Shorts professionnels en finance.</p>
+
+              <div class="jd-section">
+                <div class="jd-section-title">Le Rôle Principal : Montage Stratégique pour les Médias Sociaux</div>
+                <ul class="jd-list">
+                  <li><span><strong>Production de contenu client :</strong> Monter des séquences brutes en vidéos verticales percutantes et à fort taux de rétention, en s'assurant que le ton et le style correspondent parfaitement à la marque de chaque client.</span></li>
+                  <li><span><strong>🇫🇷/🇬🇧 Contenu Bilingue :</strong> Appliquer méticuleusement du texte dynamique, des sous-titres et des éléments visuels tendances (jump-cuts, effets sonores) dans le contenu en anglais et en français.</span></li>
+                </ul>
+              </div>
+
+              <div class="jd-section">
+                <div class="jd-section-title">Exigences Obligatoires (Non-Négociables)</div>
+                <ul class="jd-list">
+                  <li><span><strong>Expérience Avérée en Vidéo Sociale :</strong> Un portfolio solide qui démontre clairement votre capacité à produire du contenu vidéo vertical court format à fort taux de rétention, dans des styles et des tons variés.</span></li>
+                  <li><span><strong>Maîtrise Professionnelle du Bilinguisme :</strong> Essentielle pour le montage et l'application de texte/sous-titres en français et en anglais (à l'oral et à l'écrit).</span></li>
+                  <li><span><strong>Sens Stratégique :</strong> Connaissance fonctionnelle approfondie de la dynamique des vidéos sur les médias sociaux, de la performance des algorithmes et des tendances actuelles (et savoir quand les utiliser).</span></li>
+                  <li><span><strong>Expertise en Montage :</strong> Compétences démontrées sur une plateforme de montage non linéaire (NLE) standard de l'industrie (p. ex., Adobe Premiere Pro, DaVinci Resolve, CapCut).</span></li>
+                  <li><span><strong>Éthique de Travail Agile :</strong> Capacité à gérer plusieurs projets clients simultanément et à respecter des délais serrés.</span></li>
+                </ul>
+              </div>
+
+              <div class="jd-section">
+                <div class="jd-section-title">Compétences Avantageuses</div>
+                <ul class="jd-list">
+                  <li><span>Familiarité avec les bases du motion design (After Effects) ou des outils de conception graphique (Canva/Photoshop).</span></li>
+                  <li><span>Expérience ou familiarité avec les considérations de conformité et réglementaires (p. ex., contenu pour l'industrie financière).</span></li>
+                </ul>
+              </div>
+
+              <p class="jd-intro" style="margin-bottom:0"><strong style="color:var(--text)">Profil :</strong> 0 à 2 ans d'expérience professionnelle en montage. Les stages substantiels ou les projets personnels/pigistes solides axés sur des briefs clients simulés ou réels sont fortement valorisés. Si vous êtes prêt(e) à traduire les besoins de clients divers en performances vidéo percutantes et professionnelles, postulez et partagez votre portfolio dès aujourd'hui.</p>
+
+              <div class="jd-apply">
+                <p class="jd-apply-text"><strong>Prêt(e) à postuler?</strong> Envoyez-nous votre CV et votre portfolio. Nous examinons chaque candidature personnellement.</p>
+                <a class="btn btn-primary" href="mailto:mitch@m1promedia.com?subject=Candidature — Monteur(euse) Vidéo Court Format">Postuler</a>
+              </div>
+            </div>
+
+          </div>
         </div>
-      </a>
+      </div>
 
       <div class="open-banner">
         <div class="open-banner-text">
@@ -166,6 +290,29 @@
     </div>
   </div>
 </section>
+
+<script>
+  const roleCard = document.getElementById('roleCard');
+  const roleExpand = document.getElementById('roleExpand');
+
+  roleCard.addEventListener('click', () => {
+    const open = roleExpand.classList.contains('is-open');
+    if (open) {
+      roleExpand.classList.remove('is-open');
+      roleCard.classList.remove('is-open');
+    } else {
+      roleExpand.classList.add('is-open');
+      roleCard.classList.add('is-open');
+    }
+  });
+
+  function setLang(lang) {
+    document.querySelectorAll('.jd-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.jd-lang-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('jd-' + lang).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
 
 </body>
 </html>
