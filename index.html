@@ -49,7 +49,7 @@
   .m1-expand-single video,.m1-expand-single iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
   .m1-photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
   @media(max-width:640px){.m1-photo-grid{grid-template-columns:repeat(2,1fr)}}
-  .m1-photo{position:relative;aspect-ratio:1;overflow:hidden;border-radius:8px;background:#000}
+  .m1-photo{position:relative;aspect-ratio:1;overflow:hidden;border-radius:8px;background:#000;cursor:pointer}
   .m1-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s cubic-bezier(.2,.7,.3,1)}
   .m1-photo:hover img{transform:scale(1.05)}
   .m1-card-body{padding:32px 36px;display:flex;flex-direction:column;justify-content:center;gap:12px;border-left:1px solid var(--line)}
@@ -62,6 +62,19 @@
   .m1-expand-close svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
   .m1-section-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:12px;margin-top:20px}
   .m1-section-label:first-child{margin-top:0}
+
+  /* Photo lightbox */
+  .m1-photo-lb{display:none;position:fixed;inset:0;z-index:9999;background:rgba(6,6,8,.96);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:20px}
+  .m1-photo-lb.is-open{display:flex;animation:m1fade .2s ease}
+  @keyframes m1fade{from{opacity:0}to{opacity:1}}
+  .m1-photo-lb-img{max-width:100%;max-height:90vh;object-fit:contain;border-radius:8px;user-select:none}
+  .m1-photo-lb-close{position:fixed;top:16px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid var(--line);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+  .m1-photo-lb-close:hover{background:rgba(255,255,255,.18)}
+  .m1-photo-lb-nav{position:fixed;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(11,11,13,.6);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+  .m1-photo-lb-nav:hover{background:rgba(11,11,13,.9)}
+  .m1-photo-lb-prev{left:14px}
+  .m1-photo-lb-next{right:14px}
+  .m1-photo-lb-count{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--muted);letter-spacing:.1em}
 </style>
 </head>
 <body>
@@ -72,6 +85,16 @@
     <div class="m1-list" id="m1List"></div>
   </div>
 </div>
+
+<!-- Photo lightbox -->
+<div class="m1-photo-lb" id="photoLb">
+  <button class="m1-photo-lb-close" id="photoLbClose">&#10005;</button>
+  <button class="m1-photo-lb-nav m1-photo-lb-prev" id="photoLbPrev">&#8249;</button>
+  <img class="m1-photo-lb-img" id="photoLbImg" src="" alt="">
+  <button class="m1-photo-lb-nav m1-photo-lb-next" id="photoLbNext">&#8250;</button>
+  <div class="m1-photo-lb-count" id="photoLbCount"></div>
+</div>
+
 <script>
 const PROJECTS = [
   {
@@ -112,7 +135,8 @@ const PROJECTS = [
     media:[
       {type:"youtube",id:"TZ9bgpQddeM"},
       {type:"youtube",id:"sLFYe0xsD3Y"},
-      {type:"mp4",src:"https://video.wixstatic.com/video/c166fc_e965ba6930dc44c789468723c6418007/1080p/mp4/file.mp4"}
+      {type:"mp4",src:"https://video.wixstatic.com/video/c166fc_e965ba6930dc44c789468723c6418007/1080p/mp4/file.mp4"},
+      {type:"youtube",id:"cjCn7YwGMtg"}
     ],
     images:[
       "https://static.wixstatic.com/media/c166fc_bef2149706594df29c9617371e704442~mv2.jpg",
@@ -184,15 +208,59 @@ const PROJECTS = [
   }
 ];
 
+// Photo lightbox
+const photoLb = document.getElementById('photoLb');
+const photoLbImg = document.getElementById('photoLbImg');
+const photoLbCount = document.getElementById('photoLbCount');
+let lbImages = [], lbIndex = 0;
+
+function openPhotoLb(images, index) {
+  lbImages = images;
+  lbIndex = index;
+  updatePhotoLb();
+  photoLb.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function updatePhotoLb() {
+  photoLbImg.src = lbImages[lbIndex];
+  photoLbCount.textContent = (lbIndex + 1) + ' / ' + lbImages.length;
+  document.getElementById('photoLbPrev').style.display = lbImages.length > 1 ? 'flex' : 'none';
+  document.getElementById('photoLbNext').style.display = lbImages.length > 1 ? 'flex' : 'none';
+}
+
+function closePhotoLb() {
+  photoLb.classList.remove('is-open');
+  photoLbImg.src = '';
+  document.body.style.overflow = '';
+}
+
+document.getElementById('photoLbClose').addEventListener('click', closePhotoLb);
+photoLb.addEventListener('click', e => { if (e.target === photoLb) closePhotoLb(); });
+document.getElementById('photoLbPrev').addEventListener('click', e => {
+  e.stopPropagation();
+  lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length;
+  updatePhotoLb();
+});
+document.getElementById('photoLbNext').addEventListener('click', e => {
+  e.stopPropagation();
+  lbIndex = (lbIndex + 1) % lbImages.length;
+  updatePhotoLb();
+});
+document.addEventListener('keydown', e => {
+  if (!photoLb.classList.contains('is-open')) return;
+  if (e.key === 'Escape') closePhotoLb();
+  if (e.key === 'ArrowLeft') { lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; updatePhotoLb(); }
+  if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbImages.length; updatePhotoLb(); }
+});
+
 const list = document.getElementById('m1List');
 
 function buildExpandContent(p, stageEl) {
   stageEl.innerHTML = '';
-
   const hasMixed = p.media && p.media.length && p.images && p.images.length;
 
   if (hasMixed) {
-    // Videos on top, photo grid below
     const videoLabel = document.createElement('div');
     videoLabel.className = 'm1-section-label';
     videoLabel.textContent = 'Videos';
@@ -222,11 +290,13 @@ function buildExpandContent(p, stageEl) {
     stageEl.appendChild(photoLabel);
 
     const photoGrid = document.createElement('div'); photoGrid.className = 'm1-photo-grid';
-    p.images.forEach(src => {
+    p.images.forEach((src, idx) => {
       const cell = document.createElement('div'); cell.className = 'm1-photo';
       const img = document.createElement('img');
       img.src = src; img.loading = 'lazy';
-      cell.appendChild(img); photoGrid.appendChild(cell);
+      cell.appendChild(img);
+      cell.addEventListener('click', () => openPhotoLb(p.images, idx));
+      photoGrid.appendChild(cell);
     });
     stageEl.appendChild(photoGrid);
 
@@ -279,11 +349,13 @@ function buildExpandContent(p, stageEl) {
 
   } else if (p.images && p.images.length) {
     const grid = document.createElement('div'); grid.className = 'm1-photo-grid';
-    p.images.forEach(src => {
+    p.images.forEach((src, idx) => {
       const cell = document.createElement('div'); cell.className = 'm1-photo';
       const img = document.createElement('img');
       img.src = src; img.loading = 'lazy';
-      cell.appendChild(img); grid.appendChild(cell);
+      cell.appendChild(img);
+      cell.addEventListener('click', () => openPhotoLb(p.images, idx));
+      grid.appendChild(cell);
     });
     stageEl.appendChild(grid);
     if (p.video) {
