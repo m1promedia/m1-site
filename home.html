@@ -135,13 +135,12 @@
   }
   @media(max-width:700px){.m1-about-inner{grid-template-columns:1fr}}
   .m1-about-img{
-    position:relative;
-    min-height:340px;
     overflow:hidden;
   }
   .m1-about-img img{
-    position:absolute;inset:0;width:100%;height:100%;
-    object-fit:cover;object-position:center top;
+    width:100%;
+    height:auto;
+    display:block;
     filter:saturate(.9) brightness(.88);
     transition:transform .8s cubic-bezier(.2,.7,.3,1);
   }
@@ -152,7 +151,6 @@
     border-left:1px solid var(--line);
   }
   @media(max-width:700px){
-    .m1-about-img{min-height:240px}
     .m1-about-body{padding:24px;border-left:none;border-top:1px solid var(--line)}
   }
   .m1-about-tag{
