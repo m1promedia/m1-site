@@ -132,7 +132,7 @@
     border:1px solid var(--line);
     border-radius:var(--radius);
     overflow:hidden;
-    height:360px;
+    height:420px;
   }
   @media(max-width:700px){
     .m1-about-inner{grid-template-columns:1fr;height:auto}
@@ -144,13 +144,13 @@
   .m1-about-img img{
     position:absolute;inset:0;width:100%;height:100%;
     object-fit:cover;
-    object-position:center center;
+    object-position:center top;
     filter:saturate(.9) brightness(.88);
     transition:transform .8s cubic-bezier(.2,.7,.3,1);
   }
   .m1-about-img:hover img{transform:scale(1.03)}
   @media(max-width:700px){
-    .m1-about-img{height:260px}
+    .m1-about-img{height:300px}
   }
   .m1-about-body{
     padding:36px 40px;
