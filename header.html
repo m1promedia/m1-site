@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Hanken+Grotesk:wght@400;500;600&display=swap');
+  :root{
+    --accent:#e0a64b;
+    --bg:#0b0b0d;
+    --surface:#141418;
+    --text:#f4f1ea;
+    --muted:#8d8d96;
+    --line:rgba(255,255,255,.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:transparent;font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--accent);color:var(--bg)}
+
+  .m1-header{
+    background:rgba(11,11,13,.78);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .m1-nav{
+    height:68px;
+    max-width:1200px;
+    margin:0 auto;
+    padding:0 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    opacity:0;
+    animation:m1NavIn .7s cubic-bezier(.22,.61,.36,1) .05s forwards;
+  }
+  @keyframes m1NavIn{
+    from{opacity:0;transform:translateY(-8px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .m1-nav{opacity:1;animation:none}
+    *{animation-duration:.001s!important;transition-duration:.001s!important}
+  }
+
+  /* ---- LOGO ---- */
+  .m1-logo{
+    display:flex;
+    align-items:center;
+    text-decoration:none;
+    transition:filter .35s ease,transform .35s ease;
+  }
+  .m1-logo img{
+    height:30px;
+    width:auto;
+    display:block;
+  }
+  .m1-logo:hover{
+    filter:drop-shadow(0 0 10px rgba(224,166,75,.45));
+    transform:translateY(-1px);
+  }
+
+  /* ---- DESKTOP LINKS ---- */
+  .m1-links{
+    display:flex;
+    align-items:center;
+    gap:28px;
+  }
+  .m1-link{
+    position:relative;
+    color:var(--muted);
+    text-decoration:none;
+    font-size:13.5px;
+    font-weight:500;
+    letter-spacing:.02em;
+    padding:6px 0;
+    transition:color .25s ease;
+  }
+  .m1-link::after{
+    content:'';
+    position:absolute;
+    left:0;bottom:0;
+    width:100%;height:2px;border-radius:2px;
+    background:linear-gradient(to right,var(--accent),#f0c178);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .35s cubic-bezier(.22,.61,.36,1);
+  }
+  .m1-link:hover{color:var(--text)}
+  .m1-link:hover::after{transform:scaleX(1)}
+  .m1-link.is-active{color:var(--text)}
+  .m1-link.is-active::after{transform:scaleX(1)}
+
+  .m1-link-cta{
+    position:relative;
+    color:#161310;
+    background:var(--accent);
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.02em;
+    padding:10px 22px;
+    border-radius:100px;
+    overflow:hidden;
+    isolation:isolate;
+    transition:transform .35s cubic-bezier(.22,.61,.36,1),box-shadow .35s ease;
+  }
+  .m1-link-cta::after{
+    content:'';
+    position:absolute;inset:0;z-index:-1;
+    background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.25) 50%,transparent 65%);
+    transform:translateX(-120%);
+    transition:transform .7s cubic-bezier(.22,.61,.36,1);
+  }
+  .m1-link-cta:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 28px -10px rgba(224,166,75,.5);
+  }
+  .m1-link-cta:hover::after{transform:translateX(120%)}
+
+  /* ---- BURGER ---- */
+  .m1-burger{
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    gap:5px;
+    width:40px;height:40px;
+    background:transparent;
+    border:1px solid var(--line);
+    border-radius:10px;
+    cursor:pointer;
+    align-items:center;
+    transition:border-color .25s ease,background .25s ease;
+  }
+  .m1-burger:hover{border-color:rgba(224,166,75,.5);background:rgba(224,166,75,.06)}
+  .m1-bar{
+    width:16px;height:1.8px;
+    background:var(--text);
+    border-radius:2px;
+    transition:transform .35s cubic-bezier(.22,.61,.36,1),opacity .25s ease;
+  }
+  .m1-burger.is-open .m1-bar:nth-child(1){transform:translateY(6.8px) rotate(45deg)}
+  .m1-burger.is-open .m1-bar:nth-child(2){opacity:0}
+  .m1-burger.is-open .m1-bar:nth-child(3){transform:translateY(-6.8px) rotate(-45deg)}
+
+  /* ---- MOBILE MENU ---- */
+  .m1-mobile{
+    overflow:hidden;
+    max-height:0;
+    opacity:0;
+    transition:max-height .45s cubic-bezier(.22,.61,.36,1),opacity .3s ease;
+    background:rgba(11,11,13,.92);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+  }
+  .m1-mobile.is-open{
+    max-height:300px;
+    opacity:1;
+    border-bottom:1px solid var(--line);
+  }
+  .m1-mobile-inner{
+    display:flex;
+    flex-direction:column;
+    padding:10px 24px 18px;
+  }
+  .m1-mobile-link{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    color:var(--muted);
+    text-decoration:none;
+    font-size:15px;
+    font-weight:500;
+    padding:13px 4px;
+    border-bottom:1px solid var(--line);
+    transition:color .25s ease,padding-left .3s cubic-bezier(.22,.61,.36,1);
+  }
+  .m1-mobile-link:last-child{border-bottom:none}
+  .m1-mobile-link:hover{color:var(--text);padding-left:10px}
+  .m1-mobile-link.is-active{color:var(--text)}
+  .m1-mobile-link.is-cta{color:var(--accent);font-weight:600}
+  .m1-arrow-r{
+    opacity:.4;
+    transition:opacity .2s,transform .2s;
+  }
+  .m1-mobile-link:hover .m1-arrow-r{opacity:1;transform:translateX(3px);color:var(--accent)}
+
+  @media(max-width:640px){
+    .m1-links{display:none}
+    .m1-burger{display:flex}
+    .m1-logo img{height:26px}
+  }
+</style>
+</head>
+<body>
+
+<header class="m1-header">
+  <nav class="m1-nav">
+
+    <a href="https://www.m1promedia.com/" target="_top" class="m1-logo" aria-label="M1 ProMedia home">
+      <img src="https://m1promedia.github.io/m1-site/M1ProMedia%20White%20Horizontal.png" alt="M1 ProMedia">
+    </a>
+
+    <div class="m1-links">
+      <a href="https://www.m1promedia.com/" target="_top" class="m1-link" data-path="/">Home</a>
+      <a href="https://www.m1promedia.com/outwork" target="_top" class="m1-link" data-path="/outwork">Portfolio</a>
+      <a href="mailto:mitch@m1promedia.com" class="m1-link-cta">Get In Touch</a>
+    </div>
+
+    <button class="m1-burger" id="m1Burger" aria-label="Toggle menu">
+      <span class="m1-bar"></span>
+      <span class="m1-bar"></span>
+      <span class="m1-bar"></span>
+    </button>
+
+  </nav>
+
+  <div class="m1-mobile" id="m1Mobile">
+    <div class="m1-mobile-inner">
+      <a href="https://www.m1promedia.com/" target="_top" class="m1-mobile-link" data-path="/">
+        Home <span class="m1-arrow-r">&#8594;</span>
+      </a>
+      <a href="https://www.m1promedia.com/outwork" target="_top" class="m1-mobile-link" data-path="/outwork">
+        Portfolio <span class="m1-arrow-r">&#8594;</span>
+      </a>
+      <a href="mailto:mitch@m1promedia.com" class="m1-mobile-link is-cta">
+        Get In Touch <span class="m1-arrow-r">&#8594;</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const burger  = document.getElementById('m1Burger');
+  const mobile  = document.getElementById('m1Mobile');
+
+  burger.addEventListener('click', () => {
+    const isOpen = mobile.classList.toggle('is-open');
+    burger.classList.toggle('is-open', isOpen);
+    const h = isOpen ? 68 + mobile.scrollHeight : 68;
+    try { window.parent.postMessage({ type:'wix-iframe-height', value: h }, '*') } catch(e) {}
+  });
+
+  // auto-highlight active page link
+  try {
+    const path = window.parent.location.pathname;
+    document.querySelectorAll('[data-path]').forEach(a => {
+      if (a.dataset.path === path) a.classList.add('is-active');
+    });
+  } catch(e) {}
+</script>
+
+</body>
+</html>
