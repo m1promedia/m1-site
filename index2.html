@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Hanken+Grotesk:wght@400;500;600&display=swap');
+  :root{--accent:#e0a64b;--accent-soft:rgba(224,166,75,.12);--bg:#0b0b0d;--surface:#141418;--text:#f4f1ea;--muted:#8d8d96;--line:rgba(255,255,255,.08);--radius:14px}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:var(--bg);color:var(--text);font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--accent);color:var(--bg)}
+  .m1-grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")}
+  .m1-root{position:relative;padding:48px 24px 72px;overflow:hidden}
+  .m1-root::before{content:'';position:absolute;left:50%;top:-120px;width:720px;height:420px;transform:translateX(-50%);background:radial-gradient(ellipse at center top,rgba(224,166,75,.08),transparent 70%);pointer-events:none}
+  .m1-wrap{position:relative;max-width:1100px;margin:0 auto}
+  .m1-kicker{display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);padding:8px 18px;border-radius:999px;border:1px solid rgba(224,166,75,.25);background:rgba(224,166,75,.06);backdrop-filter:blur(6px);margin-bottom:22px;opacity:0;animation:m1Up .9s cubic-bezier(.22,.61,.36,1) .05s forwards}
+  .m1-kicker::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px rgba(224,166,75,.9);animation:m1Pulse 2.4s ease-in-out infinite}
+  @keyframes m1Pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.8)}}
+  .m1-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;line-height:.96;letter-spacing:-.02em;font-size:clamp(40px,7vw,82px);margin-bottom:20px;opacity:0;animation:m1Up .9s cubic-bezier(.22,.61,.36,1) .18s forwards}
+  .m1-title .m1-grad{background:linear-gradient(100deg,var(--text) 0%,var(--accent) 55%,#f0c178 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+  .m1-lede{display:flex;align-items:center;gap:14px;color:var(--muted);font-size:clamp(15px,1.4vw,18px);max-width:560px;line-height:1.55;margin-bottom:46px;opacity:0;animation:m1Up .9s cubic-bezier(.22,.61,.36,1) .3s forwards}
+  .m1-lede::before{content:'';height:1px;flex:0 0 42px;background:linear-gradient(to right,var(--accent),transparent)}
+  @keyframes m1Up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+  .m1-list{display:flex;flex-direction:column;gap:16px}
+  .m1-card-wrap{display:flex;flex-direction:column}
+  .m1-reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.22,.61,.36,1),transform .8s cubic-bezier(.22,.61,.36,1);will-change:opacity,transform}
+  .m1-reveal.is-in{opacity:1;transform:translateY(0)}
+  @media (prefers-reduced-motion:reduce){
+    .m1-reveal{opacity:1;transform:none;transition:none}
+    *{animation-duration:.001s!important}
+  }
+  .m1-card{position:relative;display:grid;grid-template-columns:42% 1fr;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;isolation:isolate;transition:transform .45s cubic-bezier(.22,.61,.36,1),border-color .45s ease,box-shadow .45s ease}
+  .m1-card::after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),var(--accent-soft),transparent 60%);opacity:0;transition:opacity .4s ease}
+  .m1-card:hover{transform:translateY(-4px);border-color:rgba(224,166,75,.35);box-shadow:0 18px 44px -18px rgba(0,0,0,.7)}
+  .m1-card:hover::after{opacity:1}
+  .m1-card.expand-open{border-radius:var(--radius) var(--radius) 0 0;border-bottom-color:transparent;transform:none}
+  @media(max-width:640px){.m1-card{grid-template-columns:1fr}}
+  .m1-card-media{position:relative;aspect-ratio:16/10;overflow:hidden;cursor:pointer;background:var(--bg)}
+  @media(max-width:640px){.m1-card-media{aspect-ratio:16/9}}
+  .m1-card-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(26px) brightness(.45) saturate(1.15);transform:scale(1.15)}
+  .m1-card-img{position:absolute;inset:0;width:100%;height:100%;transition:transform .7s cubic-bezier(.2,.7,.3,1)}
+  .m1-fit{object-fit:contain;padding:20px}
+  .m1-cover{object-fit:cover;filter:saturate(.92) brightness(.82)}
+  .m1-card-media:hover .m1-fit{transform:scale(1.04)}
+  .m1-card-media:hover .m1-cover{transform:scale(1.06)}
+  .m1-card-fallback{position:absolute;inset:0;background:radial-gradient(120% 120% at 0% 0%,rgba(224,166,75,.18),transparent 55%),linear-gradient(135deg,#1a1a20,#0e0e12)}
+  .m1-arrow{display:flex;justify-content:center;align-items:center;padding:10px 0;cursor:pointer}
+  .m1-arrow-wrap{transition:transform .45s cubic-bezier(.2,.7,.3,1);display:flex;align-items:center;justify-content:center}
+  .m1-arrow.is-open .m1-arrow-wrap{transform:rotate(180deg)}
+  .m1-arrow-icon{width:22px;height:22px;stroke:rgba(255,255,255,.35);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .25s}
+  .m1-arrow:hover .m1-arrow-icon{stroke:var(--accent)}
+  .m1-arrow:not(.is-open):hover .m1-arrow-icon{animation:m1bob .9s ease-in-out infinite}
+  .m1-arrow.is-open .m1-arrow-icon{stroke:rgba(255,255,255,.65)}
+  @keyframes m1bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  .m1-expand{overflow:hidden;max-height:0;opacity:0;background:var(--surface);border:1px solid var(--line);border-top:none;border-radius:0 0 var(--radius) var(--radius);transition:max-height .55s cubic-bezier(.2,.7,.3,1),opacity .35s ease}
+  .m1-expand.is-open{max-height:6000px;opacity:1}
+  .m1-expand-inner{padding:24px 28px 28px}
+  .m1-expand-stage{position:relative;width:100%}
+  .m1-expand-videos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:640px){.m1-expand-videos{grid-template-columns:1fr}}
+  .m1-expand-video{position:relative;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;border:1px solid transparent;transition:border-color .35s ease}
+  .m1-expand-video:hover{border-color:rgba(224,166,75,.3)}
+  .m1-expand-video iframe,.m1-expand-video video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+  .m1-expand-video-full{position:relative;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;margin-top:12px}
+  .m1-expand-video-full video{position:absolute;inset:0;width:100%;height:100%;background:#000}
+  .m1-expand-single{position:relative;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}
+  .m1-expand-single video,.m1-expand-single iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+  .m1-photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  @media(max-width:640px){.m1-photo-grid{grid-template-columns:repeat(2,1fr)}}
+  .m1-photo{position:relative;aspect-ratio:1;overflow:hidden;border-radius:8px;background:#000;cursor:pointer}
+  .m1-photo::after{content:'';position:absolute;inset:0;border-radius:8px;border:1px solid rgba(224,166,75,0);transition:border-color .35s ease;pointer-events:none}
+  .m1-photo:hover::after{border-color:rgba(224,166,75,.45)}
+  .m1-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s cubic-bezier(.2,.7,.3,1)}
+  .m1-photo:hover img{transform:scale(1.05)}
+  .m1-card-body{padding:32px 36px;display:flex;flex-direction:column;justify-content:center;gap:12px;border-left:1px solid var(--line)}
+  @media(max-width:640px){.m1-card-body{padding:24px;border-left:none;border-top:1px solid var(--line)}}
+  .m1-card-tag{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .m1-card-tag::after{content:'';height:1px;flex:0 0 26px;background:var(--line);transition:background .4s ease,flex-basis .45s cubic-bezier(.22,.61,.36,1)}
+  .m1-card:hover .m1-card-tag::after{background:var(--accent);flex-basis:44px}
+  .m1-card-name{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(20px,2.2vw,28px);font-weight:600;letter-spacing:-.01em;line-height:1.1}
+  .m1-card-desc{color:var(--muted);font-size:14px;line-height:1.68;max-width:480px}
+  .m1-expand-close{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:24px;padding:12px 22px;cursor:pointer;border:1px solid var(--line);border-radius:100px;width:fit-content;margin-left:auto;margin-right:auto;color:var(--muted);font-size:13px;font-weight:500;overflow:hidden;isolation:isolate;transition:color .3s,border-color .3s,transform .3s ease,box-shadow .3s ease}
+  .m1-expand-close::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.14) 50%,transparent 65%);transform:translateX(-120%);transition:transform .7s cubic-bezier(.22,.61,.36,1)}
+  .m1-expand-close:hover::after{transform:translateX(120%)}
+  .m1-expand-close:hover{color:var(--accent);border-color:rgba(224,166,75,.5);transform:translateY(-1px);box-shadow:0 8px 24px -12px rgba(224,166,75,.35)}
+  .m1-expand-close svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .m1-section-label{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:12px;margin-top:20px}
+  .m1-section-label::after{content:'';height:1px;flex:0 0 42px;background:linear-gradient(to right,var(--accent),transparent)}
+  .m1-section-label:first-child{margin-top:0}
+  .m1-mixed-photos{margin-top:12px}
+  .m1-photo-lb{display:none;position:fixed;inset:0;z-index:9999;background:rgba(6,6,8,.96);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:20px}
+  .m1-photo-lb.is-open{display:flex;animation:m1fade .2s ease}
+  @keyframes m1fade{from{opacity:0}to{opacity:1}}
+  .m1-photo-lb-img{max-width:100%;max-height:90vh;object-fit:contain;border-radius:8px;user-select:none}
+  .m1-photo-lb-close{position:fixed;top:16px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid var(--line);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s,color .2s}
+  .m1-photo-lb-close:hover{background:rgba(224,166,75,.15);border-color:rgba(224,166,75,.5);color:var(--accent)}
+  .m1-photo-lb-nav{position:fixed;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(11,11,13,.6);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s,color .2s}
+  .m1-photo-lb-nav:hover{background:rgba(11,11,13,.9);border-color:rgba(224,166,75,.5);color:var(--accent)}
+  .m1-photo-lb-prev{left:14px}
+  .m1-photo-lb-next{right:14px}
+  .m1-photo-lb-count{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--muted);letter-spacing:.1em}
+</style>
+</head>
+<body>
+<div class="m1-grain"></div>
+<div class="m1-root">
+  <div class="m1-wrap">
+    <div class="m1-kicker">M1 ProMedia</div>
+    <h1 class="m1-title">Our&nbsp;<span class="m1-grad">projects.</span></h1>
+    <p class="m1-lede">Samples of work we have created for our clients</p>
+    <div class="m1-list" id="m1List"></div>
+  </div>
+</div>
+
+<div class="m1-photo-lb" id="photoLb">
+  <button class="m1-photo-lb-close" id="photoLbClose">&#10005;</button>
+  <button class="m1-photo-lb-nav m1-photo-lb-prev" id="photoLbPrev">&#8249;</button>
+  <img class="m1-photo-lb-img" id="photoLbImg" src="" alt="">
+  <button class="m1-photo-lb-nav m1-photo-lb-next" id="photoLbNext">&#8250;</button>
+  <div class="m1-photo-lb-count" id="photoLbCount"></div>
+</div>
+
+<script>
+const PROJECTS = [
+  {
+    client:"Eleventh Hour Games",
+    category:"Game Trailers",
+    inline:true,
+    videos:["R8zEPYn_gyg","U8ubbH2bwVY"],
+    cover:"https://static.wixstatic.com/media/c166fc_9fc54dc42e004897bb9f4839d3473a62~mv2.webp/v1/fit/w_1600,h_1600,al_c/KRaftonEleventh.webp",
+    desc:"We are joining the team at EHG to deliver exciting media focused around their hugely popular live service ARPG, Last Epoch. Utilizing experience gathered throughout several years working in Esports and creating similar game trailer style content, we are excited to put our gaming expertise to use."
+  },
+  {
+    client:"Bell TV1",
+    category:"Television & Broadcast",
+    inline:true,
+    media:[
+      {type:"mp4",src:"https://video.wixstatic.com/video/c166fc_96e6abf7dde945df8a1cf201d4b2285d/1080p/mp4/file.mp4"},
+      {type:"youtube",id:"P9Iy41vja0I"},
+      {type:"youtube",id:"qSODG-l3YvE"},
+      {type:"youtube",id:"YysL1G13gkI"},
+      {type:"youtube",id:"v1iqYUDldVc"},
+      {type:"youtube",id:"VuLpGmdcXIQ"}
+    ],
+    cover:"https://static.wixstatic.com/media/c166fc_b128cb12c88c449f88f2a5fa83b970df~mv2.jpg/v1/fit/w_1600,h_1600,al_c/download.jpg",
+    desc:"We're working closely with the Bell Fibe TV1 team to create captivating community-driven content. We will be utilizing our creative expertise to create promotional trailers and social content for their upcoming shows that will be broadcast throughout the TV1 network. We are incredibly excited to be working with such an accomplished team of individuals who are immensely passionate about their work."
+  },
+  {
+    client:"Finnect",
+    category:"Financial & Investment Content",
+    inline:true,
+    media:[{type:"mp4",src:"https://video.wixstatic.com/video/c166fc_b85d04d688ee4954a15b046cd07fadbb/1080p/mp4/file.mp4"}],
+    cover:"https://static.wixstatic.com/media/c166fc_2f6d859a3325417b8bbaea285bb72a24~mv2.jpg",
+    desc:"We were thrilled to partner with Finnect to help empower financial advisors to build a powerful online brand presence. Our primary focus was producing engaging, short-form social media ads that drove traffic and grew our clients rosters."
+  },
+  {
+    client:"Echo Esports",
+    category:"Live Production & Esports",
+    inline:true,
+    media:[
+      {type:"youtube",id:"TZ9bgpQddeM"},
+      {type:"youtube",id:"sLFYe0xsD3Y"},
+      {type:"mp4",src:"https://video.wixstatic.com/video/c166fc_e965ba6930dc44c789468723c6418007/1080p/mp4/file.mp4"},
+      {type:"youtube",id:"cjCn7YwGMtg"}
+    ],
+    images:[
+      "https://static.wixstatic.com/media/c166fc_bef2149706594df29c9617371e704442~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_9923fd74dc0f4a70a7b0d464ff1a02e5~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_c5f4a8794163467d95c14fdf6523245a~mv2.jpeg",
+      "https://static.wixstatic.com/media/c166fc_425d1ce947b74133aa60ff1e20b6f26b~mv2.jpeg",
+      "https://static.wixstatic.com/media/c166fc_17f2300e3d0f4bd9b5934412ce2c5c74~mv2.jpeg",
+      "https://static.wixstatic.com/media/c166fc_05c9df961bc346cab780a68d5723d231~mv2.jpeg",
+      "https://static.wixstatic.com/media/c166fc_7b063a8ad33e410dbee6029befb06934~mv2.jpeg",
+      "https://static.wixstatic.com/media/c166fc_c9706b9340224f5084f08fc4fb2fffdb~mv2.jpeg",
+      "https://static.wixstatic.com/media/c166fc_c69778855d3b41ca86cc21d9731ff99b~mv2.jpeg",
+      "https://static.wixstatic.com/media/c166fc_f372ac86bd54482f80e4b722babd63f9~mv2.jpeg",
+      "https://static.wixstatic.com/media/c166fc_dcd78d9e8e6540e99c6173f88283269e~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_41078ddf31f64ff5800dd39c115a4611~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_687546ac0459463aa5e218ad1f030e44~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_0855b9b728ef4bbabf8d8ef5fe3e7413~mv2.png",
+      "https://static.wixstatic.com/media/c166fc_2be4de01f4d44739a99f3dc6d450f698~mv2.png",
+      "https://static.wixstatic.com/media/c166fc_8fd22a81c24942c49071fe4373453cea~mv2.png",
+      "https://static.wixstatic.com/media/c166fc_bcd3f2f3e4b549169978bde0ecbbbe74~mv2.png",
+      "https://static.wixstatic.com/media/c166fc_4f62d06edac640c0a3a4532d64081ac0~mv2.png"
+    ],
+    cover:"https://static.wixstatic.com/media/c166fc_98b43aedb47045f086d6d8d9b385e5a7~mv2.png/v1/fit/w_1600,h_1600,al_c/308880270_498091722328767_1695005996118476105_n.png",
+    desc:"Over several years of close collaboration, we played a key role in elevating Echo Esports into the industry-leading Esports powerhouse that they are today. From producing bespoke animated assets for their brand, sponsors, and corporate partners, to directing high-impact live events and delivering cinema-quality promotional trailers, our creative and technical contributions helped drive their growth and expand their audience reach."
+  },
+  {
+    client:"Transtex",
+    category:"B2B Marketing & Promotional Content",
+    inline:true,
+    media:[
+      {type:"mp4",src:"https://video.wixstatic.com/video/c166fc_7efe0abc203843f4b7fab85ff248b141/1080p/mp4/file.mp4"}
+    ],
+    images:[
+      "https://static.wixstatic.com/media/c166fc_627b145e37684bbe943b94944772af1e~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_87674b430c964a8d94831d57b1caffc6~mv2.jpg"
+    ],
+    cover:"https://static.wixstatic.com/media/c166fc_78040dc0d1d6421cbf80a317a3fd2536~mv2.jpg/v1/fit/w_1600,h_1600,al_c/Transtex.jpg",
+    desc:"We are proud of our ongoing collaboration with Transtex, a valued client who has entrusted us with a range of creative services. Our work includes delivering high-quality video editing, photography, videography, and graphic design to support their marketing initiatives. In addition, we've partnered with Transtex to produce instructional videos for their B2B products, as well as customer-focused interview and testimonial content."
+  },
+  {
+    client:"Ortlieb Media",
+    category:"Social Video Content",
+    inline:true,
+    media:[
+      {type:"mp4",src:"https://video.wixstatic.com/video/c166fc_5b7f6c4f7a1f4d81b936a3f4f9142729/1080p/mp4/file.mp4"},
+      {type:"mp4",src:"https://video.wixstatic.com/video/c166fc_1b3a8e23022740a9adca7aedf8525c20/1080p/mp4/file.mp4"}
+    ],
+    cover:"https://static.wixstatic.com/media/c166fc_8cb9bf26f4894a6ebb45d77d5aad6350~mv2.jpg/v1/fit/w_1600,h_1600,al_c/dsc06336.jpg",
+    desc:"We had the opportunity of collaborating closely with Matt and his business to deliver high-quality video editing services for both him and his clients. These projects span a diverse range of content, from real estate ventures to promotional media for local businesses in the agriculture sector. Our support included video editing, color grading, and sound design, tailored to meet the specific needs of each project."
+  },
+  {
+    client:"Kize",
+    category:"Product Photography",
+    inline:true,
+    images:[
+      "https://static.wixstatic.com/media/c166fc_e364a13ce6a44348b4e8dc2f9cc0ca26~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_8ca9aab5e66849c59adcce9594d55450~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_284b5ea958a24d0285ce3a80b976fdf2~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_61e6c85c955f40109f4d58da9502446c~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_224f4667ef3c4c76b67574235a471007~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_ce742de9e21c439faf4651a33914c68b~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_0834ceb3c1524244bbe4d7768fc86a84~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_eac98bd02e474f5cba716bd30b91d42b~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_30018893e81d44c696e52f439b8fff53~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_05f93880f67a481282ad63f6218e3811~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_3ab7055fe00149fea004168ae62a3379~mv2.jpg",
+      "https://static.wixstatic.com/media/c166fc_ea8fe826090c4beaacb273e668434615~mv2.jpeg"
+    ],
+    video:"https://video.wixstatic.com/video/c166fc_b83113e12bd5443c884e8c27f18c6135/720p/mp4/file.mp4",
+    cover:"https://static.wixstatic.com/media/c166fc_2bca91d5c30645e8ac5ef87a46051ed7~mv2.jpg",
+    desc:"Photography, product shots and a targeted launch campaign for this premium face mask startup at the height of the pandemic. The work was featured in Forbes and on Global News."
+  }
+];
+
+const photoLb = document.getElementById('photoLb');
+const photoLbImg = document.getElementById('photoLbImg');
+const photoLbCount = document.getElementById('photoLbCount');
+let lbImages = [], lbIndex = 0;
+
+function openPhotoLb(images, index) {
+  lbImages = images; lbIndex = index;
+  updatePhotoLb();
+  photoLb.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+function updatePhotoLb() {
+  photoLbImg.src = lbImages[lbIndex];
+  photoLbCount.textContent = (lbIndex + 1) + ' / ' + lbImages.length;
+  document.getElementById('photoLbPrev').style.display = lbImages.length > 1 ? 'flex' : 'none';
+  document.getElementById('photoLbNext').style.display = lbImages.length > 1 ? 'flex' : 'none';
+}
+function closePhotoLb() {
+  photoLb.classList.remove('is-open');
+  photoLbImg.src = '';
+  document.body.style.overflow = '';
+}
+document.getElementById('photoLbClose').addEventListener('click', closePhotoLb);
+photoLb.addEventListener('click', e => { if (e.target === photoLb) closePhotoLb(); });
+document.getElementById('photoLbPrev').addEventListener('click', e => { e.stopPropagation(); lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; updatePhotoLb(); });
+document.getElementById('photoLbNext').addEventListener('click', e => { e.stopPropagation(); lbIndex = (lbIndex + 1) % lbImages.length; updatePhotoLb(); });
+document.addEventListener('keydown', e => {
+  if (!photoLb.classList.contains('is-open')) return;
+  if (e.key === 'Escape') closePhotoLb();
+  if (e.key === 'ArrowLeft') { lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; updatePhotoLb(); }
+  if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbImages.length; updatePhotoLb(); }
+});
+
+function buildPhotoGrid(images, stageEl, wrapClass) {
+  const grid = document.createElement('div');
+  grid.className = 'm1-photo-grid' + (wrapClass ? ' ' + wrapClass : '');
+  images.forEach((src, idx) => {
+    const cell = document.createElement('div'); cell.className = 'm1-photo';
+    const img = document.createElement('img'); img.src = src; img.loading = 'lazy';
+    cell.appendChild(img);
+    cell.addEventListener('click', () => openPhotoLb(images, idx));
+    grid.appendChild(cell);
+  });
+  stageEl.appendChild(grid);
+}
+
+function buildExpandContent(p, stageEl) {
+  stageEl.innerHTML = '';
+  const hasMixed = p.media && p.media.length && p.images && p.images.length;
+
+  if (hasMixed) {
+    if (p.media.length === 1) {
+      // Single video full width, then photo grid below
+      const item = p.media[0];
+      const vwrap = document.createElement('div'); vwrap.className = 'm1-expand-single';
+      if (item.type === 'mp4') {
+        const v = document.createElement('video');
+        v.src = item.src; v.controls = true; v.playsInline = true;
+        vwrap.appendChild(v);
+      } else {
+        const f = document.createElement('iframe');
+        f.src = 'https://www.youtube-nocookie.com/embed/' + item.id + '?rel=0&modestbranding=1&playsinline=1';
+        f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        f.allowFullscreen = true;
+        vwrap.appendChild(f);
+      }
+      stageEl.appendChild(vwrap);
+      buildPhotoGrid(p.images, stageEl, 'm1-mixed-photos');
+    } else {
+      // Multiple videos in grid with labels, then photo grid
+      const videoLabel = document.createElement('div');
+      videoLabel.className = 'm1-section-label'; videoLabel.textContent = 'Videos';
+      stageEl.appendChild(videoLabel);
+      const grid = document.createElement('div'); grid.className = 'm1-expand-videos';
+      p.media.forEach(item => {
+        const w = document.createElement('div'); w.className = 'm1-expand-video';
+        if (item.type === 'mp4') {
+          const v = document.createElement('video');
+          v.src = item.src; v.controls = true; v.playsInline = true; w.appendChild(v);
+        } else {
+          const f = document.createElement('iframe');
+          f.src = 'https://www.youtube-nocookie.com/embed/' + item.id + '?rel=0&modestbranding=1&playsinline=1';
+          f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+          f.allowFullscreen = true; w.appendChild(f);
+        }
+        grid.appendChild(w);
+      });
+      stageEl.appendChild(grid);
+      const photoLabel = document.createElement('div');
+      photoLabel.className = 'm1-section-label'; photoLabel.textContent = 'Photos';
+      stageEl.appendChild(photoLabel);
+      buildPhotoGrid(p.images, stageEl, null);
+    }
+
+  } else if (p.videos && p.videos.length) {
+    const grid = document.createElement('div'); grid.className = 'm1-expand-videos';
+    p.videos.forEach(id => {
+      const w = document.createElement('div'); w.className = 'm1-expand-video';
+      const f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0&modestbranding=1&playsinline=1';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      f.allowFullscreen = true; w.appendChild(f); grid.appendChild(w);
+    });
+    stageEl.appendChild(grid);
+
+  } else if (p.media && p.media.length === 1) {
+    const item = p.media[0];
+    const wrap = document.createElement('div'); wrap.className = 'm1-expand-single';
+    if (item.type === 'mp4') {
+      const v = document.createElement('video');
+      v.src = item.src; v.controls = true; v.playsInline = true; wrap.appendChild(v);
+    } else {
+      const f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + item.id + '?rel=0&modestbranding=1&playsinline=1';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      f.allowFullscreen = true; wrap.appendChild(f);
+    }
+    stageEl.appendChild(wrap);
+
+  } else if (p.media && p.media.length > 1) {
+    const grid = document.createElement('div'); grid.className = 'm1-expand-videos';
+    p.media.forEach(item => {
+      const w = document.createElement('div'); w.className = 'm1-expand-video';
+      if (item.type === 'mp4') {
+        const v = document.createElement('video');
+        v.src = item.src; v.controls = true; v.playsInline = true; w.appendChild(v);
+      } else {
+        const f = document.createElement('iframe');
+        f.src = 'https://www.youtube-nocookie.com/embed/' + item.id + '?rel=0&modestbranding=1&playsinline=1';
+        f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        f.allowFullscreen = true; w.appendChild(f);
+      }
+      grid.appendChild(w);
+    });
+    stageEl.appendChild(grid);
+
+  } else if (p.images && p.images.length) {
+    buildPhotoGrid(p.images, stageEl, null);
+    if (p.video) {
+      const vwrap = document.createElement('div'); vwrap.className = 'm1-expand-video-full';
+      const v = document.createElement('video');
+      v.src = p.video; v.controls = true; v.playsInline = true;
+      vwrap.appendChild(v); stageEl.appendChild(vwrap);
+    }
+  }
+}
+
+const list = document.getElementById('m1List');
+
+PROJECTS.forEach((p, i) => {
+  const wrap = document.createElement('div'); wrap.className = 'm1-card-wrap m1-reveal';
+  wrap.style.transitionDelay = ((i % 2) * 80) + 'ms';
+  const card = document.createElement('div'); card.className = 'm1-card';
+  card.innerHTML = '<div class="m1-card-media"><img class="m1-card-bg" src="' + p.cover + '" aria-hidden="true"><img class="m1-card-img m1-fit" loading="lazy" src="' + p.cover + '" alt="' + p.client + '"></div><div class="m1-card-body"><span class="m1-card-tag">' + p.category + '</span><div class="m1-card-name">' + p.client + '</div><p class="m1-card-desc">' + p.desc + '</p></div>';
+  wrap.appendChild(card);
+
+  card.addEventListener('mousemove', function(ev){
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', (ev.clientX - r.left) + 'px');
+    card.style.setProperty('--my', (ev.clientY - r.top) + 'px');
+  });
+
+  const arrow = document.createElement('div'); arrow.className = 'm1-arrow';
+  arrow.innerHTML = '<div class="m1-arrow-wrap"><svg class="m1-arrow-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>';
+
+  const stageId = 'stage-' + i;
+  const expand = document.createElement('div'); expand.className = 'm1-expand';
+  expand.innerHTML = '<div class="m1-expand-inner"><div class="m1-expand-stage" id="' + stageId + '"></div><div class="m1-expand-close" id="close-' + i + '"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>Close</div></div>';
+
+  wrap.appendChild(arrow); wrap.appendChild(expand); list.appendChild(wrap);
+
+  function toggle() {
+    const open = expand.classList.contains('is-open');
+    if (open) {
+      expand.classList.remove('is-open');
+      card.classList.remove('expand-open');
+      arrow.classList.remove('is-open');
+      document.getElementById(stageId).innerHTML = '';
+    } else {
+      expand.classList.add('is-open');
+      card.classList.add('expand-open');
+      arrow.classList.add('is-open');
+      buildExpandContent(p, document.getElementById(stageId));
+    }
+  }
+
+  card.querySelector('.m1-card-media').addEventListener('click', toggle);
+  arrow.addEventListener('click', toggle);
+  document.getElementById('close-' + i).addEventListener('click', toggle);
+});
+
+/* Scroll reveal */
+(function(){
+  const reveals = document.querySelectorAll('.m1-reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(function(el){ io.observe(el); });
+  } else {
+    reveals.forEach(function(el){ el.classList.add('is-in'); });
+  }
+})();
+</script>
+</body>
+</html>
