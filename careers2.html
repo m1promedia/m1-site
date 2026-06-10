@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Careers — M1 ProMedia</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Hanken+Grotesk:wght@400;500;600&display=swap');
+  :root{
+    --accent:#e0a64b;
+    --accent-soft:rgba(224,166,75,.12);
+    --bg:#0b0b0d;
+    --surface:#141418;
+    --text:#f4f1ea;
+    --muted:#8d8d96;
+    --line:rgba(255,255,255,.08);
+    --radius:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:var(--bg);color:var(--text);font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--accent);color:var(--bg)}
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+  .kicker{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:10px}
+  .kicker::after{content:'';height:1px;flex:0 0 42px;background:linear-gradient(to right,var(--accent),transparent)}
+  .section{padding:64px 24px}
+
+  /* ---- SCROLL REVEAL ---- */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.22,.61,.36,1),transform .8s cubic-bezier(.22,.61,.36,1);transition-delay:var(--d,0ms);will-change:opacity,transform}
+  .reveal.is-in{opacity:1;transform:translateY(0)}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    *{animation-duration:.001s!important}
+  }
+
+  /* ---- HERO ---- */
+  .hero{padding:80px 24px 88px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+  .hero-glow{position:absolute;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(224,166,75,.08) 0%,transparent 70%);top:-120px;right:-100px;pointer-events:none}
+  .hero-pill{display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);padding:8px 18px;border-radius:999px;border:1px solid rgba(224,166,75,.25);background:rgba(224,166,75,.06);backdrop-filter:blur(6px);margin-bottom:22px;opacity:0;animation:up .9s cubic-bezier(.22,.61,.36,1) .05s forwards}
+  .hero-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px rgba(224,166,75,.9);animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.8)}}
+  .hero-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;line-height:.94;letter-spacing:-.03em;font-size:clamp(36px,6vw,78px);max-width:900px;margin-bottom:22px;opacity:0;animation:up .9s cubic-bezier(.22,.61,.36,1) .18s forwards}
+  .hero-title span{background:linear-gradient(100deg,var(--accent) 0%,#f0c178 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+  .hero-sub{color:var(--muted);font-size:clamp(13px,1.1vw,15px);max-width:520px;line-height:1.65;opacity:0;animation:up .9s cubic-bezier(.22,.61,.36,1) .3s forwards}
+  @keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---- BUTTONS ---- */
+  .btn{position:relative;font-family:'Hanken Grotesk',sans-serif;font-size:13px;font-weight:600;padding:11px 22px;border-radius:100px;cursor:pointer;text-decoration:none;display:inline-block;overflow:hidden;isolation:isolate;transition:transform .35s cubic-bezier(.22,.61,.36,1),box-shadow .35s ease,background .25s,color .25s,border-color .25s}
+  .btn::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.22) 50%,transparent 65%);transform:translateX(-120%);transition:transform .7s cubic-bezier(.22,.61,.36,1)}
+  .btn:hover::after{transform:translateX(120%)}
+  .btn-primary{background:var(--accent);color:#161310;border:1px solid var(--accent)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 32px -8px rgba(224,166,75,.45)}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+  .btn-ghost:hover{transform:translateY(-2px);border-color:var(--accent);color:var(--accent);box-shadow:0 10px 28px -12px rgba(224,166,75,.35)}
+
+  /* ---- VALUES ---- */
+  .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:840px){.values-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.values-grid{grid-template-columns:1fr}}
+  .value-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 24px;overflow:hidden;isolation:isolate;transition:transform .45s cubic-bezier(.22,.61,.36,1),border-color .45s ease,box-shadow .45s ease}
+  .value-card::before{content:'';position:absolute;inset:0;z-index:-1;background:radial-gradient(300px circle at var(--mx,50%) var(--my,50%),var(--accent-soft),transparent 60%);opacity:0;transition:opacity .4s ease}
+  .value-card:hover{transform:translateY(-5px);border-color:rgba(224,166,75,.35);box-shadow:0 18px 44px -18px rgba(0,0,0,.7)}
+  .value-card:hover::before{opacity:1}
+  .value-icon{width:32px;height:32px;border-radius:8px;background:rgba(224,166,75,.1);border:1px solid rgba(224,166,75,.2);display:flex;align-items:center;justify-content:center;margin-bottom:14px;transition:background .35s ease,border-color .35s ease,box-shadow .35s ease}
+  .value-card:hover .value-icon{background:rgba(224,166,75,.18);border-color:rgba(224,166,75,.45);box-shadow:0 0 18px -4px rgba(224,166,75,.4)}
+  .value-icon svg{width:15px;height:15px;stroke:var(--accent);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .value-title{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:600;letter-spacing:-.01em;margin-bottom:8px}
+  .value-desc{color:var(--muted);font-size:13px;line-height:1.65}
+  .section-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;line-height:.96;letter-spacing:-.02em;font-size:clamp(26px,3.8vw,44px);margin-bottom:36px}
+  .roles-list{display:flex;flex-direction:column;gap:10px}
+
+  /* Role card */
+  .role-wrap{display:flex;flex-direction:column}
+  .role-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;display:flex;align-items:center;justify-content:space-between;gap:20px;cursor:pointer;overflow:hidden;isolation:isolate;transition:border-color .35s,background .35s,transform .45s cubic-bezier(.22,.61,.36,1),box-shadow .45s ease}
+  .role-card::before{content:'';position:absolute;inset:0;z-index:-1;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),var(--accent-soft),transparent 60%);opacity:0;transition:opacity .4s ease}
+  .role-card:hover{border-color:rgba(224,166,75,.35);background:#1a1a1f;transform:translateY(-3px);box-shadow:0 14px 36px -16px rgba(0,0,0,.7)}
+  .role-card:hover::before{opacity:1}
+  .role-card.is-open{border-radius:var(--radius) var(--radius) 0 0;border-bottom-color:transparent;background:#1a1a1f;transform:none;box-shadow:none}
+  @media(max-width:600px){.role-card{flex-direction:column;align-items:flex-start;gap:14px}}
+  .role-left{display:flex;flex-direction:column;gap:5px}
+  .role-tag{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .role-tag::after{content:'';height:1px;flex:0 0 26px;background:var(--line);transition:background .4s ease,flex-basis .45s cubic-bezier(.22,.61,.36,1)}
+  .role-card:hover .role-tag::after{background:var(--accent);flex-basis:44px}
+  .role-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(15px,1.5vw,19px);font-weight:600;letter-spacing:-.01em;color:var(--text)}
+  .role-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}
+  .role-badge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--muted);transition:border-color .35s ease,color .35s ease}
+  .role-card:hover .role-badge{border-color:rgba(224,166,75,.25);color:var(--text)}
+  .role-arrow{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .25s,background .25s,transform .45s cubic-bezier(.2,.7,.3,1)}
+  .role-card:hover .role-arrow{border-color:rgba(224,166,75,.5);background:rgba(224,166,75,.1)}
+  .role-card.is-open .role-arrow{transform:rotate(180deg);border-color:rgba(255,255,255,.3)}
+  .role-arrow svg{width:14px;height:14px;stroke:var(--muted);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .25s}
+  .role-card:hover .role-arrow svg{stroke:var(--accent)}
+  .role-card.is-open .role-arrow svg{stroke:var(--text)}
+
+  /* Job description expand */
+  .role-expand{overflow:hidden;max-height:0;opacity:0;background:var(--surface);border:1px solid var(--line);border-top:none;border-radius:0 0 var(--radius) var(--radius);transition:max-height .6s cubic-bezier(.2,.7,.3,1),opacity .35s ease}
+  .role-expand.is-open{max-height:6000px;opacity:1}
+  .role-expand-inner{padding:26px 30px 30px}
+  @media(max-width:640px){.role-expand-inner{padding:20px}}
+
+  /* Job description typography */
+  .jd-lang-toggle{display:flex;gap:6px;margin-bottom:24px}
+  .jd-lang-btn{font-family:'Hanken Grotesk',sans-serif;font-size:11px;font-weight:600;padding:5px 14px;border-radius:100px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--muted);transition:all .2s;letter-spacing:.04em}
+  .jd-lang-btn:hover{border-color:rgba(224,166,75,.4);color:var(--text)}
+  .jd-lang-btn.active{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+  .jd-content{display:none}
+  .jd-content.active{display:block}
+  .jd-intro{color:var(--muted);font-size:13px;line-height:1.75;margin-bottom:22px}
+  .jd-section{margin-bottom:20px}
+  .jd-section-title{display:flex;align-items:center;gap:12px;font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:600;letter-spacing:-.01em;margin-bottom:10px;color:var(--text)}
+  .jd-section-title::after{content:'';height:1px;flex:0 0 32px;background:linear-gradient(to right,rgba(224,166,75,.5),transparent)}
+  .jd-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .jd-list li{display:flex;gap:10px;color:var(--muted);font-size:13px;line-height:1.7}
+  .jd-list li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:8px}
+  .jd-list li strong{color:var(--text);font-weight:600}
+  .jd-divider{border:none;border-top:1px solid var(--line);margin:24px 0}
+  .jd-apply{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
+  @media(max-width:600px){.jd-apply{flex-direction:column;align-items:flex-start}}
+  .jd-apply-text{font-size:13px;color:var(--muted);line-height:1.6;max-width:460px}
+  .jd-apply-text strong{color:var(--text);font-weight:600}
+
+  /* Open banner */
+  .open-banner{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;overflow:hidden;isolation:isolate;transition:transform .45s cubic-bezier(.22,.61,.36,1),border-color .45s ease,box-shadow .45s ease}
+  .open-banner::before{content:'';position:absolute;inset:0;z-index:-1;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),var(--accent-soft),transparent 60%);opacity:0;transition:opacity .4s ease}
+  .open-banner:hover{transform:translateY(-3px);border-color:rgba(224,166,75,.35);box-shadow:0 14px 36px -16px rgba(0,0,0,.7)}
+  .open-banner:hover::before{opacity:1}
+  @media(max-width:600px){.open-banner{flex-direction:column;align-items:flex-start}}
+  .open-banner-text{display:flex;flex-direction:column;gap:5px}
+  .open-banner-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(14px,1.4vw,17px);font-weight:600;letter-spacing:-.01em}
+  .open-banner-sub{color:var(--muted);font-size:13px;line-height:1.55;max-width:480px}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="wrap">
+    <div class="hero-pill">Careers at M1 ProMedia</div>
+    <h1 class="hero-title">Make work you're<br><span>proud of.</span></h1>
+    <p class="hero-sub">We're a small, focused team that cares about craft. If you're passionate about video or digital media and want to work on a diverse range of projects, we'd love to hear from you.</p>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="section" style="border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="kicker reveal">Why M1</div>
+    <h2 class="section-title reveal" style="--d:80ms">What we're about.</h2>
+    <div class="values-grid">
+
+      <div class="value-card reveal" style="--d:0ms">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="value-title">Real projects with real impact</div>
+        <p class="value-desc">Every project we take on reaches a real audience. From broadcast television to game trailers seen by millions, your work here gets seen.</p>
+      </div>
+
+      <div class="value-card reveal" style="--d:70ms">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <div class="value-title">No filler, no fluff</div>
+        <p class="value-desc">We run lean on purpose. No pointless meetings, no bloated process. Just focused people doing good work and delivering on time.</p>
+      </div>
+
+      <div class="value-card reveal" style="--d:140ms">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="value-title">Collaborative by nature</div>
+        <p class="value-desc">We work closely together across every project. Your ideas get heard and your skills get developed alongside people who genuinely care about the craft.</p>
+      </div>
+
+      <div class="value-card reveal" style="--d:0ms">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="value-title">Quality over everything</div>
+        <p class="value-desc">We don't cut corners. Whether it's a 30-second social clip or a full live production, we hold ourselves to the same standard every single time.</p>
+      </div>
+
+      <div class="value-card reveal" style="--d:70ms">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="value-title">Based in Montreal</div>
+        <p class="value-desc">We're proudly Montreal-based with a network that spans broadcast, gaming and brand. Local roots, work that travels.</p>
+      </div>
+
+      <div class="value-card reveal" style="--d:140ms">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="value-title">Room to grow</div>
+        <p class="value-desc">We're growing and we want people who grow with us. Take ownership, build new skills and leave your mark on a company that's just getting started.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ROLES -->
+<section class="section" id="roles">
+  <div class="wrap">
+    <div class="kicker reveal">Open Positions</div>
+    <h2 class="section-title reveal" style="--d:80ms">We're hiring.</h2>
+    <div class="roles-list">
+
+      <div class="role-wrap reveal" style="--d:140ms">
+        <div class="role-card" id="roleCard">
+          <div class="role-left">
+            <span class="role-tag">Post Production</span>
+            <div class="role-title">Short-form Video Editor</div>
+            <div class="role-meta">
+              <span class="role-badge">Remote (Global)</span>
+              <span class="role-badge">Full-time</span>
+              <span class="role-badge">Part-time</span>
+              <span class="role-badge">Freelance</span>
+              <span class="role-badge">Contract</span>
+            </div>
+          </div>
+          <div class="role-arrow">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+
+        <div class="role-expand" id="roleExpand">
+          <div class="role-expand-inner">
+
+            <!-- Language toggle -->
+            <div class="jd-lang-toggle">
+              <button class="jd-lang-btn active" onclick="setLang('en')">🇬🇧 English</button>
+              <button class="jd-lang-btn" onclick="setLang('fr')">🇫🇷 Français</button>
+            </div>
+
+            <!-- English -->
+            <div class="jd-content active" id="jd-en">
+              <p class="jd-intro">Are you a highly creative, bilingual (French/English) editor with short-form video experience? We need a strategic editor who can expertly pivot between distinct brand aesthetics — from fashion Reels to professional finance Shorts.</p>
+
+              <div class="jd-section">
+                <div class="jd-section-title">The Core Role: Strategic Social Editing</div>
+                <ul class="jd-list">
+                  <li><span><strong>Client Content Production:</strong> Edit raw footage into polished, high-retention vertical videos, ensuring the tone and style perfectly match each client's brand.</span></li>
+                  <li><span><strong>🇫🇷/🇬🇧 Bilingual Assets:</strong> Meticulously apply dynamic text, captions, and trending visuals (jump-cuts, SFX) in both English and French content.</span></li>
+                </ul>
+              </div>
+
+              <div class="jd-section">
+                <div class="jd-section-title">Mandatory Requirements (Non-Negotiable)</div>
+                <ul class="jd-list">
+                  <li><span><strong>Proven Social Video Experience:</strong> A strong portfolio that clearly showcases your ability to produce high-retention, vertical short-form video content across varied styles and tones.</span></li>
+                  <li><span><strong>Professional Bilingual Fluency:</strong> Essential for editing and applying text/captions in both French and English (spoken and written).</span></li>
+                  <li><span><strong>Strategic Insight:</strong> Deep functional knowledge of social media video dynamics, algorithm performance, and current trends (and when to use them).</span></li>
+                  <li><span><strong>Editing Expertise:</strong> Skill in an industry-standard NLE (e.g., Adobe Premiere Pro, DaVinci Resolve, CapCut).</span></li>
+                  <li><span><strong>Agile Work Ethic:</strong> Ability to manage multiple concurrent projects and meet tight deadlines.</span></li>
+                </ul>
+              </div>
+
+              <div class="jd-section">
+                <div class="jd-section-title">Advantageous Skills</div>
+                <ul class="jd-list">
+                  <li><span>Familiarity with basic motion graphics (After Effects) or graphic design tools (Canva/Photoshop).</span></li>
+                  <li><span>Experience with compliance and regulatory considerations (e.g., finance industry content).</span></li>
+                </ul>
+              </div>
+
+              <p class="jd-intro" style="margin-bottom:0"><strong style="color:var(--text)">Background:</strong> 0–2 years of professional editing experience. Substantial freelance or robust personal projects focused on client-style briefs are highly valued. If you're ready to translate diverse client needs into powerful, professional video performance, apply and share your portfolio today.</p>
+
+              <div class="jd-apply">
+                <p class="jd-apply-text"><strong>Ready to apply?</strong> Send us your resume and portfolio. We review every application personally.</p>
+                <a class="btn btn-primary" href="mailto:mitch@m1promedia.com?subject=Application — Short-form Video Editor">Apply Now</a>
+              </div>
+            </div>
+
+            <!-- French -->
+            <div class="jd-content" id="jd-fr">
+              <p class="jd-intro">Êtes-vous un(e) monteur(euse) bilingue (français/anglais) très créatif(ve) avec de l'expérience en vidéo court format? Nous cherchons un(e) éditeur(euse) stratégique qui peut pivoter avec aisance entre des esthétiques de marque distinctes, allant des Reels de mode aux Shorts professionnels en finance.</p>
+
+              <div class="jd-section">
+                <div class="jd-section-title">Le Rôle Principal : Montage Stratégique pour les Médias Sociaux</div>
+                <ul class="jd-list">
+                  <li><span><strong>Production de contenu client :</strong> Monter des séquences brutes en vidéos verticales percutantes et à fort taux de rétention, en s'assurant que le ton et le style correspondent parfaitement à la marque de chaque client.</span></li>
+                  <li><span><strong>🇫🇷/🇬🇧 Contenu Bilingue :</strong> Appliquer méticuleusement du texte dynamique, des sous-titres et des éléments visuels tendances (jump-cuts, effets sonores) dans le contenu en anglais et en français.</span></li>
+                </ul>
+              </div>
+
+              <div class="jd-section">
+                <div class="jd-section-title">Exigences Obligatoires (Non-Négociables)</div>
+                <ul class="jd-list">
+                  <li><span><strong>Expérience Avérée en Vidéo Sociale :</strong> Un portfolio solide qui démontre clairement votre capacité à produire du contenu vidéo vertical court format à fort taux de rétention, dans des styles et des tons variés.</span></li>
+                  <li><span><strong>Maîtrise Professionnelle du Bilinguisme :</strong> Essentielle pour le montage et l'application de texte/sous-titres en français et en anglais (à l'oral et à l'écrit).</span></li>
+                  <li><span><strong>Sens Stratégique :</strong> Connaissance fonctionnelle approfondie de la dynamique des vidéos sur les médias sociaux, de la performance des algorithmes et des tendances actuelles (et savoir quand les utiliser).</span></li>
+                  <li><span><strong>Expertise en Montage :</strong> Compétences démontrées sur une plateforme de montage non linéaire (NLE) standard de l'industrie (p. ex., Adobe Premiere Pro, DaVinci Resolve, CapCut).</span></li>
+                  <li><span><strong>Éthique de Travail Agile :</strong> Capacité à gérer plusieurs projets clients simultanément et à respecter des délais serrés.</span></li>
+                </ul>
+              </div>
+
+              <div class="jd-section">
+                <div class="jd-section-title">Compétences Avantageuses</div>
+                <ul class="jd-list">
+                  <li><span>Familiarité avec les bases du motion design (After Effects) ou des outils de conception graphique (Canva/Photoshop).</span></li>
+                  <li><span>Expérience ou familiarité avec les considérations de conformité et réglementaires (p. ex., contenu pour l'industrie financière).</span></li>
+                </ul>
+              </div>
+
+              <p class="jd-intro" style="margin-bottom:0"><strong style="color:var(--text)">Profil :</strong> 0 à 2 ans d'expérience professionnelle en montage. Les stages substantiels ou les projets personnels/pigistes solides axés sur des briefs clients simulés ou réels sont fortement valorisés. Si vous êtes prêt(e) à traduire les besoins de clients divers en performances vidéo percutantes et professionnelles, postulez et partagez votre portfolio dès aujourd'hui.</p>
+
+              <div class="jd-apply">
+                <p class="jd-apply-text"><strong>Prêt(e) à postuler?</strong> Envoyez-nous votre CV et votre portfolio. Nous examinons chaque candidature personnellement.</p>
+                <a class="btn btn-primary" href="mailto:mitch@m1promedia.com?subject=Candidature — Monteur(euse) Vidéo Court Format">Postuler</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="open-banner reveal" style="--d:220ms">
+        <div class="open-banner-text">
+          <div class="open-banner-title">Don't see your role listed?</div>
+          <p class="open-banner-sub">We're always open to hearing from talented people. If you think you'd be a good fit for what we do, send us a message and tell us what you bring to the table.</p>
+        </div>
+        <a class="btn btn-ghost" href="mailto:mitch@m1promedia.com?subject=General Application" style="white-space:nowrap;flex-shrink:0">Get In Touch</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  const roleCard = document.getElementById('roleCard');
+  const roleExpand = document.getElementById('roleExpand');
+
+  roleCard.addEventListener('click', () => {
+    const open = roleExpand.classList.contains('is-open');
+    if (open) {
+      roleExpand.classList.remove('is-open');
+      roleCard.classList.remove('is-open');
+    } else {
+      roleExpand.classList.add('is-open');
+      roleCard.classList.add('is-open');
+    }
+  });
+
+  function setLang(lang) {
+    document.querySelectorAll('.jd-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.jd-lang-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('jd-' + lang).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  /* Cursor spotlight */
+  document.querySelectorAll('.value-card, .role-card, .open-banner').forEach(el => {
+    el.addEventListener('mousemove', ev => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', (ev.clientX - r.left) + 'px');
+      el.style.setProperty('--my', (ev.clientY - r.top) + 'px');
+    });
+  });
+
+  /* Scroll reveal */
+  (function(){
+    const reveals = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-in');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      reveals.forEach(el => io.observe(el));
+    } else {
+      reveals.forEach(el => el.classList.add('is-in'));
+    }
+  })();
+</script>
+
+</body>
+</html>
