@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<!-- saved from url=(0055)file:///C:/Users/Mitchell/Downloads/m1-homepage-v2.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>M1 ProMedia</title>
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-<link href="./M1 ProMedia_files/css2" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#0b0b0d;
@@ -84,11 +84,14 @@
   /* ---- HERO ---- */
   .m1-hero{
     position:relative;
-    min-height:92vh;
+    height:760px;
     display:flex;align-items:center;justify-content:center;
     text-align:center;
     overflow:hidden;
-    padding:96px 24px 110px;
+    padding:70px 24px 90px;
+  }
+  @media (max-width:760px){
+    .m1-hero{height:620px;padding:56px 20px 80px}
   }
   .m1-hero-video{
     position:absolute;inset:0;width:100%;height:100%;
@@ -383,7 +386,15 @@
 
 <!-- HERO -->
 <section class="m1-hero">
-  <video class="m1-hero-video" src="https://video.wixstatic.com/video/11062b_802873a9c69b4642966143da07b8ea88/1080p/mp4/file.mp4" autoplay="" muted="" loop="" playsinline="" preload="auto"></video>
+  <video
+    class="m1-hero-video"
+    src="https://video.wixstatic.com/video/11062b_802873a9c69b4642966143da07b8ea88/1080p/mp4/file.mp4"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+  ></video>
   <div class="m1-hero-overlay"></div>
   <div class="m1-hero-grain"></div>
   <div class="m1-hero-inner">
@@ -424,41 +435,41 @@
 <!-- SERVICES -->
 <section class="m1-section">
   <div class="m1-wrap">
-    <div class="m1-section-kicker m1-reveal is-in">What We Do</div>
-    <h2 class="m1-section-title m1-reveal is-in" style="--d:80ms">Our services.</h2>
+    <div class="m1-section-kicker m1-reveal">What We Do</div>
+    <h2 class="m1-section-title m1-reveal" style="--d:80ms">Our services.</h2>
     <div class="m1-services-grid">
 
-      <div class="m1-service-card m1-reveal is-in" style="--d:0ms">
+      <div class="m1-service-card m1-reveal" style="--d:0ms">
         <div class="m1-service-num">01</div>
         <div class="m1-service-name">Trailer Production</div>
         <p class="m1-service-desc">Game launch trailers, brand reveals and promotional cuts built to land with your audience on any platform.</p>
       </div>
 
-      <div class="m1-service-card m1-reveal is-in" style="--d:70ms">
+      <div class="m1-service-card m1-reveal" style="--d:70ms">
         <div class="m1-service-num">02</div>
         <div class="m1-service-name">Video Editing &amp; Post</div>
         <p class="m1-service-desc">Full post-production from rough cut to delivery. Color grading, sound design and motion work handled in house.</p>
       </div>
 
-      <div class="m1-service-card m1-reveal is-in" style="--d:140ms">
+      <div class="m1-service-card m1-reveal" style="--d:140ms">
         <div class="m1-service-num">03</div>
         <div class="m1-service-name">Live Event Production</div>
         <p class="m1-service-desc">End-to-end production for live and broadcast events. Full setup, direction and on-site execution from scratch.</p>
       </div>
 
-      <div class="m1-service-card m1-reveal is-in" style="--d:0ms">
+      <div class="m1-service-card m1-reveal" style="--d:0ms">
         <div class="m1-service-num">04</div>
         <div class="m1-service-name">Social Media Content</div>
         <p class="m1-service-desc">Short-form campaigns and platform-specific edits, plus full content workflow setup covering capture through delivery.</p>
       </div>
 
-      <div class="m1-service-card m1-reveal is-in" style="--d:70ms">
+      <div class="m1-service-card m1-reveal" style="--d:70ms">
         <div class="m1-service-num">05</div>
         <div class="m1-service-name">Photography &amp; Videography</div>
         <p class="m1-service-desc">Product photography, event coverage and brand shoots. On-site capture through final retouched deliverables.</p>
       </div>
 
-      <div class="m1-service-card m1-reveal is-in" style="--d:140ms">
+      <div class="m1-service-card m1-reveal" style="--d:140ms">
         <div class="m1-service-num">06</div>
         <div class="m1-service-name">Motion &amp; Graphic Design</div>
         <p class="m1-service-desc">Animated brand assets, sponsor packages and motion graphics built for broadcast and digital use.</p>
@@ -471,16 +482,20 @@
 <!-- ABOUT -->
 <section class="m1-section m1-about">
   <div class="m1-wrap">
-    <div class="m1-section-kicker is-center m1-reveal is-in" style="text-align:center">About Us</div>
-    <h2 class="m1-section-title is-center m1-reveal is-in" style="--d:80ms">Who we are.</h2>
-    <div class="m1-about-inner m1-reveal is-in" style="--d:140ms">
+    <div class="m1-section-kicker is-center m1-reveal" style="text-align:center">About Us</div>
+    <h2 class="m1-section-title is-center m1-reveal" style="--d:80ms">Who we are.</h2>
+    <div class="m1-about-inner m1-reveal" style="--d:140ms">
       <div class="m1-about-img">
-        <img src="./M1 ProMedia_files/c166fc_25eed487692e4f8a8dd347c2b6d07f6e~mv2.jpg" alt="Mitchell Corbeil" loading="lazy">
+        <img
+          src="https://static.wixstatic.com/media/c166fc_25eed487692e4f8a8dd347c2b6d07f6e~mv2.jpg"
+          alt="Mitchell Corbeil"
+          loading="lazy"
+        >
       </div>
       <div class="m1-about-body">
         <div class="m1-about-tag">M1 ProMedia</div>
         <div class="m1-about-name">Mitchell Corbeil</div>
-        <div class="m1-about-role">Founder &amp; CEO · Montreal, QC</div>
+        <div class="m1-about-role">Founder &amp; CEO &middot; Montreal, QC</div>
         <div class="m1-about-divider"></div>
         <p class="m1-about-text">
           M1 ProMedia is a Montreal-based digital media company with over 10 years of experience across post-production, live events and branded content. Our team has worked with clients in gaming, broadcast and brand to deliver everything from game trailers to full-scale live productions.
@@ -497,9 +512,9 @@
 <!-- CTA -->
 <section class="m1-cta">
   <div class="m1-wrap">
-    <h2 class="m1-cta-title m1-reveal is-in">Let's work together.</h2>
-    <p class="m1-cta-desc m1-reveal is-in" style="--d:80ms">Have a project in mind? Reach out and we will figure out how we can help.</p>
-    <a class="m1-btn m1-btn-primary m1-reveal is-in" style="--d:160ms" href="mailto:mitch@m1promedia.com">mitch@m1promedia.com</a>
+    <h2 class="m1-cta-title m1-reveal">Let's work together.</h2>
+    <p class="m1-cta-desc m1-reveal" style="--d:80ms">Have a project in mind? Reach out and we will figure out how we can help.</p>
+    <a class="m1-btn m1-btn-primary m1-reveal" style="--d:160ms" href="mailto:mitch@m1promedia.com">mitch@m1promedia.com</a>
   </div>
 </section>
 
@@ -533,6 +548,5 @@
 })();
 </script>
 
-
-
-</body></html>
+</body>
+</html>
